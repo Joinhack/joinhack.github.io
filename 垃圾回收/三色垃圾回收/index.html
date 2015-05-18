@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>三色垃圾回收</title>
   
-    <meta name="author" content="Firstname Lastname">
+    <meta name="author" content="Join Gong">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
@@ -31,7 +31,7 @@
     <div class="navbar">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="/">Blog Title</a>
+          <a class="brand" href="/">Joinhack&#39;s Blog</a>
           <ul class="nav">
             
               
@@ -96,7 +96,9 @@
 <li>所有这些黑色的对象都是根可达的，白色的都是根不可达的，白色对象都删除掉。</li>
 </ol>
 
-<p>以上步骤就是三色标记法的理论了吧，但事实上实现肯定不会像上面的这么简简单单的。</p>
+<p>以上步骤就是三色标记法的理论了。 非常简单吧， 至少在STW(STOP THE WORLD)的情况下.</p>
+
+<p>但是在mutator和GC同时工作的时候要满足 <strong>黑色对象只会引用灰色的对象或其他黑色对象。</strong> 变得复杂起来了。</p>
 
     <hr>
     <div class="pagination">
@@ -165,7 +167,7 @@
       </div>
 
       <footer>
-        <p>&copy; Firstname Lastname 2013 
+        <p>&copy; Join Gong 2013 
           with help from <a href="http://github.com/wendal/gor" target="_blank" title="Gor -- Fast Blog">Gor</a>
           and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
 		  and Idea from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
