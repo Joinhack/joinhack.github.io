@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>redis的hash表</title>
+  
+    <meta name="author" content="Join Gong">
+
+    <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+
+    <!-- Le styles -->
+    <link href="/assets/twitter/stylesheets/bootstrap.min.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/stylesheets/style.css" type="text/css" rel="stylesheet" media="all">
+<link href="/assets/twitter/widgets/google_prettify/stylesheets/twitter-bootstrap.css" type="text/css" rel="stylesheet" media="all">
+ 
+
+    <!-- Le fav and touch icons -->
+  <!-- Update these with your own images
+    <link rel="shortcut icon" href="images/favicon.ico">
+    <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+  -->
+  </head>
+
+  <body>
+
+    <div class="navbar">
+      <div class="navbar-inner">
+        <div class="container">
+          <a class="brand" href="/">Joinhack&#39;s Blog</a>
+          <ul class="nav">
+            
+              
+
+
+  <li><a href="/archive">Archive</a></li>
+
+
+            
+              
+
+
+  <li><a href="/tags">Tags</a></li>
+
+
+            
+              
+
+
+  <li><a href="/categories">Categories</a></li>
+
+
+            
+              
+
+
+  <li><a href="/pages">Pages</a></li>
+
+
+            
+              
+
+
+  <li><a href="/about">About Me</a></li>
+
+
+            
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+
+      <div class="content">
+        <div class="page-header">
+  <h1>redis的hash表 </h1>
+</div>
+
+<div class="row">
+  <div class="span8">
+    <h2>redis的hash表</h2>
+
+<p>首先还是先说说hash表是什么？ 很多语言有不同的定义 java中的HashMap HashTable， golang中的map都是hash表的实现。大致原理如下：</p>
+
+<p>hash表添加KEY-VALUE</p>
+
+<pre><code>1). 将KEY计算hash，将KEY的hash值与bulks数求莫后找到对应bulk. 如果bulk有值循环整个bulk对应的KEY-VALUE 如果bulk中的KEY与加入的KEY相等 就覆盖其VALUE， 如果不等就追加到bulk后面。
+2). 达到占用bulks的阀值expand bulks, 遍历已有的数据重新加入扩展后的bulks中。
+3). 未达到阀值，完成hash插入操作。
+</code></pre>
+
+<p>hash表删除KEY</p>
+
+<pre><code>1). 将KEY计算hash，将KEY的hash值与bulks数求莫后 找到对应的bulk。
+2). 遍历整个bulk依次对比KEY， 找到与KEY相等的KEY-VALUE将其移除。
+</code></pre>
+
+<p>hash表查找KEY的对象</p>
+
+<pre><code>1). 将KEY计算hash，将KEY的hash值与bulks数求莫后 找到对应的bulk。
+2). 遍历整个bulk依次对比KEY， 找到与KEY相等的KEY-VALUE将VALUE返回。
+</code></pre>
+
+<p>上面就是hash表的工作原理。总体来说hash表的查询都是O(1) 删除也算是O(1), 从整体上来看也是一个O(1)操作， 这里不考虑hash碰撞的情况（如果碰撞最坏情况就变成O(N)）。 但是事实上如果插入非常频繁，从步骤就能看出, 就会经常expand， 这样插入肯定不会是O(1)的。</p>
+
+<p>redis的提供的数据结构之一也是hash表，但是redis的hash表明显做的写优化， 就算是频繁插入也能达到O(1)的时间复杂度。下面就是redis的hash表结构。</p>
+
+    <hr>
+    <div class="pagination">
+      <ul>
+        <ul>
+          
+            <li class="prev"><a href="/垃圾回收/三色垃圾回收/" title="三色垃圾回收">&larr; Previous</a></li>
+          
+          
+
+            <li><a href="/archive">Archive</a></li>
+
+          
+          
+            <li class="next disabled"><a>Next &rarr;</a>
+          
+        </ul>
+      </ul>
+    </div>
+    <hr>
+    
+<div id="disqus_thread"></div>
+<script>
+    var disqus_developer = 1;
+    var disqus_shortname = 'jekyllbootstrap'; // required: replace example with your forum shortname
+    /* * * DON'T EDIT BELOW THIS LINE * * */
+    (function() {
+        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+        dsq.src = 'http://' + disqus_shortname + '.disqus.com/embed.js';
+        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+<a href="http://disqus.com" class="dsq-brlink">blog comments powered by <span class="logo-disqus">Disqus</span></a>
+
+  </div>
+  
+  <div class="span4">
+    <h4>Published</h4>
+    <div class="date"><span>2015-05-10</span></div>
+    <br>
+    <h4>Categories</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/categories#redis-ref">redis <span>1</span></a>
+</li>
+    
+      <li>
+  <a href="/categories#Blog-ref">Blog <span>2</span></a>
+</li>
+    
+    </ul>
+    <br>
+    <h4>Tags</h4>
+    <ul class="tag_box">
+    
+      <li>
+  <a href="/tags#redis hash-ref">redis hash <span>1</span></a>
+</li>
+    
+    </ul>
+  </div>
+</div>
+
+      </div>
+
+      <footer>
+        <p>&copy; Join Gong 2013 
+          with help from <a href="http://github.com/wendal/gor" target="_blank" title="Gor -- Fast Blog">Gor</a>
+          and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
+		  and Idea from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>
+        </p>
+      </footer>
+
+    </div> <!-- /container -->
+
+    
+<script src="http://cdnjs.cloudflare.com/ajax/libs/prettify/188.0.0/prettify.js"></script>
+<script>
+  var pres = document.getElementsByTagName("pre");
+  for (var i=0; i < pres.length; ++i) {
+    pres[i].className = "prettyprint linenums";
+  }
+  prettyPrint();
+</script>
+
+    
+<script>
+    var _gaq=[['_setAccount','UA-123-12'],['_trackPageview']];
+    (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+    g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+    s.parentNode.insertBefore(g,s)}(document,'script'));
+</script>
+  </body>
+</html>
