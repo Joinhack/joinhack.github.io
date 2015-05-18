@@ -8,4 +8,9 @@
 		<lastmod>2015-05-15</lastmod>
 		<changefreq>weekly</changefreq>
 	</url>
+	<url>
+		<loc>http://sample.com/redis/redis的hash表/</loc>
+		<lastmod>2015-05-10</lastmod>
+		<changefreq>weekly</changefreq>
+	</url>
 </urlset>

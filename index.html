@@ -115,6 +115,34 @@
   </div>
 </div>
 
+<div class="post">
+  <h3 class="title"><a href="/redis/redis的hash表/">redis的hash表</a> <span class="date">2015-05-10</span></h3>
+
+  <h2>redis的hash表</h2>
+
+<p>首先还是先说说hash表是什么？ 很多语言有不同的定义 java中的HashMap HashTable， golang中的map都是hash表的实现。大致原理如下：</p>
+
+<p>hash表添加KEY-VALUE</p>
+
+<pre><code>1). 将KEY计算hash，将KEY的hash值与bulks数求莫后找到对应bulk. 如果bulk有值循环整个bulk对应的KEY-VALUE 如果bulk中的KEY与加入的KEY相等 就覆盖其VALUE， 如果不等就追加到bulk后面。
+2). 达到占用bulks的阀值expand bulks, 遍历已有的数据重新加入扩展后的bulks中。
+3). 未达到阀值，完成hash插入操作。
+</code></pre>
+
+<p>hash表删除KEY</p>
+
+<pre><code>1). 将KEY计算hash，将KEY的hash值与bulks数求莫后 找到对应的bulk。
+2). 遍历整个bulk依次对比KEY， 找到与KEY相等的KEY-VALUE将其移除。
+</code></pre>
+
+<p>hash表查找KEY的对象</p>
+
+
+  <div class="more">
+    <a href="/redis/redis的hash表/" class="btn">read more..</a>
+  </div>
+</div>
+
   </div>
 </div>
 
