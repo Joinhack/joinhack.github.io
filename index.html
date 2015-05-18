@@ -124,18 +124,25 @@
 
 <p>hash表添加KEY-VALUE</p>
 
-<pre><code>1). 将KEY计算hash，将KEY的hash值与bulks数求莫后找到对应bulk. 如果bulk有值循环整个bulk对应的KEY-VALUE 如果bulk中的KEY与加入的KEY相等 就覆盖其VALUE， 如果不等就追加到bulk后面。
-2). 达到占用bulks的阀值expand bulks, 遍历已有的数据重新加入扩展后的bulks中。
-3). 未达到阀值，完成hash插入操作。
-</code></pre>
+<ol>
+<li>将KEY计算hash，将KEY的hash值与bulks数求莫后找到对应bulk. 如果bulk有值循环整个bulk对应的KEY-VALUE 如果bulk中的KEY与加入的KEY相等 就覆盖其VALUE， 如果不等就追加到bulk后面。</li>
+<li>达到占用bulks的阀值expand bulks, 遍历已有的数据重新加入扩展后的bulks中(rehashing)。</li>
+<li>未达到阀值，完成hash插入操作。</li>
+</ol>
 
 <p>hash表删除KEY</p>
 
-<pre><code>1). 将KEY计算hash，将KEY的hash值与bulks数求莫后 找到对应的bulk。
-2). 遍历整个bulk依次对比KEY， 找到与KEY相等的KEY-VALUE将其移除。
-</code></pre>
+<ol>
+<li>将KEY计算hash，将KEY的hash值与bulks数求莫后 找到对应的bulk。</li>
+<li>遍历整个bulk依次对比KEY， 找到与KEY相等的KEY-VALUE将其移除。</li>
+</ol>
 
 <p>hash表查找KEY的对象</p>
+
+<ol>
+<li>将KEY计算hash，将KEY的hash值与bulks数求莫后 找到对应的bulk。</li>
+<li>遍历整个bulk依次对比KEY， 找到与KEY相等的KEY-VALUE将VALUE返回。</li>
+</ol>
 
 
   <div class="more">
