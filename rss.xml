@@ -3,14 +3,32 @@
   <channel>
     <title>Joinhack&#39;s Blog</title>
     <link>http://sample.com</link>
-    <pubDate>2015-05-18 06:10:39 +0800</pubDate>
+    <pubDate>2015-05-19 02:27:37 +0800</pubDate>
     <item>
-      <title>三色垃圾回收</title>
-      <link>http://sample.com/垃圾回收/三色垃圾回收/</link>
+      <title>两色标记回收</title>
+      <link>http://sample.com/垃圾回收/两色标记回收/</link>
       <pubDate>2015-05-15 12:00:00 +0800</pubDate>
-      <description>&lt;h2&gt;三色垃圾回收&lt;/h2&gt;
+      <description>&lt;h2&gt;两色标记回收&lt;/h2&gt;
 
-&lt;p&gt;三色垃圾回收算法中的3个颜色分别是 白、黑、灰.三色垃圾回收算法大致如下:&lt;/p&gt;
+&lt;p&gt;两色垃圾回收算法中的2个颜色分别是 白、黑. 算法大致如下:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;将初始化的对象置为白色&lt;/li&gt;
+&lt;li&gt;所有根(全局变量或栈上的变量)可及的对象置为黑色&lt;/li&gt;
+&lt;li&gt;清理所有白色对象&lt;/li&gt;
+&lt;li&gt;将幸存的黑色对象全部置为白色&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;这应该是最简单的mark-sweep算法. Lua5.0 就是采用的这种算法。 这种算法的缺点一目了然。 不是增量的GC算法。因此GC过程中mutator肯定是被paused的。&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>三色标记回收</title>
+      <link>http://sample.com/垃圾回收/三色标记回收/</link>
+      <pubDate>2015-05-15 12:00:00 +0800</pubDate>
+      <description>&lt;h2&gt;三色标记回收&lt;/h2&gt;
+
+&lt;p&gt;三色标记回收算法中的3个颜色分别是 白、黑、灰.三色标记回收算法大致如下:&lt;/p&gt;
 
 &lt;ol&gt;
 &lt;li&gt;将初始化的对象置为白色&lt;/li&gt;
@@ -21,7 +39,7 @@
 &lt;li&gt;所有这些黑色的对象都是根可达的，白色的都是根不可达的，白色对象都删除掉。&lt;/li&gt;
 &lt;/ol&gt;
 
-&lt;p&gt;以上步骤就是三色标记法的理论了。 非常简单吧， 至少在STW(STOP THE WORLD)的情况下.&lt;/p&gt;
+&lt;p&gt;以上步骤就是三色标记回收的理论了。 非常简单吧， 至少在STW(STOP THE WORLD)的情况下.&lt;/p&gt;
 
 &lt;p&gt;但是在mutator（非GC代码，用户的代码）和GC同时工作的时候要满足 &lt;strong&gt;黑色对象只会引用灰色的对象或其他黑色对象。&lt;/strong&gt; 变得复杂起来了。&lt;/p&gt;
 </description>

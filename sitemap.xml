@@ -4,7 +4,12 @@
 		<loc>http://sample.com/</loc>
 	</url>
 	<url>
-		<loc>http://sample.com/垃圾回收/三色垃圾回收/</loc>
+		<loc>http://sample.com/垃圾回收/两色标记回收/</loc>
+		<lastmod>2015-05-15</lastmod>
+		<changefreq>weekly</changefreq>
+	</url>
+	<url>
+		<loc>http://sample.com/垃圾回收/三色标记回收/</loc>
 		<lastmod>2015-05-15</lastmod>
 		<changefreq>weekly</changefreq>
 	</url>

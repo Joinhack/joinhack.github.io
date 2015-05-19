@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>redis的hash表</title>
+    <title>三色标记回收</title>
   
     <meta name="author" content="Join Gong">
 
@@ -78,95 +78,42 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>redis的hash表 </h1>
+  <h1>三色标记回收 </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <h2>redis的hash表</h2>
+    <h2>三色标记回收</h2>
 
-<p>首先还是先说说hash表是什么？ 很多语言有不同的定义 java中的HashMap HashTable， golang中的map都是hash表的实现。大致原理如下：</p>
-
-<p>hash表添加KEY-VALUE</p>
+<p>三色标记回收算法中的3个颜色分别是 白、黑、灰.三色标记回收算法大致如下:</p>
 
 <ol>
-<li>将KEY计算hash，将KEY的hash值与bulks数求莫后找到对应bulk. 如果bulk有值循环整个bulk对应的KEY-VALUE 如果bulk中的KEY与加入的KEY相等 就覆盖其VALUE， 如果不等就追加到bulk后面。</li>
-<li>达到占用bulks的阀值expand bulks, 遍历已有的数据重新加入扩展后的bulks中(rehashing)。</li>
-<li>未达到阀值，完成hash插入操作。</li>
+<li>将初始化的对象置为白色</li>
+<li>所有根(全局变量或栈上的变量)可及的对象置为灰色</li>
+<li>遍历这些被置位灰色的对象，灰色对象引用到的对象都置为灰色，完成对灰色变量的遍历后，将灰色对象置为黑色</li>
+<li>继续遍历其他被灰色对象</li>
+<li>所有灰色对象遍历完后，就只会剩下黑色的和白色的对象</li>
+<li>所有这些黑色的对象都是根可达的，白色的都是根不可达的，白色对象都删除掉。</li>
 </ol>
 
-<p>hash表删除KEY</p>
+<p>以上步骤就是三色标记回收的理论了。 非常简单吧， 至少在STW(STOP THE WORLD)的情况下.</p>
 
-<ol>
-<li>将KEY计算hash，将KEY的hash值与bulks数求莫后 找到对应的bulk。</li>
-<li>遍历整个bulk依次对比KEY， 找到与KEY相等的KEY-VALUE将其移除。</li>
-</ol>
-
-<p>hash表查找KEY的对象</p>
-
-<ol>
-<li>将KEY计算hash，将KEY的hash值与bulks数求莫后 找到对应的bulk。</li>
-<li>遍历整个bulk依次对比KEY， 找到与KEY相等的KEY-VALUE将VALUE返回。</li>
-</ol>
-
-<p>上面就是hash表的工作原理。总体来说hash表的查询都是O(1) 删除也算是O(1), 从整体上来看也是一个O(1)操作， 这里不考虑hash碰撞的情况（如果碰撞最坏情况就变成O(N)）。 但是事实上如果插入非常频繁，从步骤就能看出, 就会经常expand， 这样插入肯定不会是O(1)的。</p>
-
-<p>redis的提供的数据结构之一也是hash表，但是redis的hash表明做了写优化， 就算是频繁插入也能达到O(1). 的时间复杂度。下面就是redis的hash表结构。</p>
-
-<pre><code>//数据结果是从dict.h拷贝来的。
-typedef struct dictht {
-    dictEntry **table;  //这里就是上面提到的bulks 一般是一个链表
-    unsigned long size;
-    unsigned long sizemask;
-    unsigned long used;
-} dictht;
-
-typedef struct dict {
-    dictType *type;
-    void *privdata;
-    dictht ht[2]; //2个dictht 这个就是用于写优化
-    long rehashidx; /* rehashing not in progress if rehashidx == -1 */
-    int iterators; /* number of iterators currently running */
-} dict;
-</code></pre>
-
-<p>redis 写优化结构的hash表 与普通hash表最主要的区别就是rehashing的时候移动动完所有的数据，而是将rehashing过程平摊到每次读写过程中去。</p>
-
-<p>redis hash表添加KEY-VALUE (rehashing 过程中)</p>
-
-<ol>
-<li>将老表(dict中ht[0])中的一个KEY-VALUE移动到新表(dict中ht[1])中去。</li>
-<li>新表作中(dict中ht[0])bulks作为添加数据的目标， 然后将KEY-VALUE添加入hash表。</li>
-</ol>
-
-<p>hash表删除KEY (rehashing 过程中)</p>
-
-<ol>
-<li>如果将老表(dict中ht[0])中的一个KEY-VALUE移动到新表(dict中ht[1])中去。</li>
-<li>同时在将老表与新表中的依次找KEY，如果在老表中找到KEY就删除，无需再删除新表。</li>
-</ol>
-
-<p>hash表删除KEY (rehashing 过程中)</p>
-
-<ol>
-<li>将老表(dict中ht[0])中的一个KEY-VALUE移动到新表(dict中ht[1])中去。</li>
-<li>同时在将老表与新表中的依次找KEY，如果在老表中找到KEY就返回，无需再找新表。</li>
-</ol>
+<p>但是在mutator（非GC代码，用户的代码）和GC同时工作的时候要满足 <strong>黑色对象只会引用灰色的对象或其他黑色对象。</strong> 变得复杂起来了。</p>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/垃圾回收/三色标记回收/" title="三色标记回收">&larr; Previous</a></li>
+            <li class="prev"><a href="/垃圾回收/两色标记回收/" title="两色标记回收">&larr; Previous</a></li>
           
           
 
             <li><a href="/archive">Archive</a></li>
 
           
+            <li class="next"><a href="/redis/redis的hash表/" title="redis的hash表">Next &rarr;</a></li>
           
-            <li class="next disabled"><a>Next &rarr;</a>
           
         </ul>
       </ul>
@@ -191,13 +138,13 @@ typedef struct dict {
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2015-05-10</span></div>
+    <div class="date"><span>2015-05-15</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
     
       <li>
-  <a href="/categories#redis-ref">redis <span>1</span></a>
+  <a href="/categories#垃圾回收-ref">垃圾回收 <span>2</span></a>
 </li>
     
       <li>
@@ -210,7 +157,11 @@ typedef struct dict {
     <ul class="tag_box">
     
       <li>
-  <a href="/tags#redis hash-ref">redis hash <span>1</span></a>
+  <a href="/tags#垃圾回收-ref">垃圾回收 <span>2</span></a>
+</li>
+    
+      <li>
+  <a href="/tags#mark-sweep-ref">mark-sweep <span>2</span></a>
 </li>
     
     </ul>
