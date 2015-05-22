@@ -98,21 +98,21 @@
 
 <p>以上步骤就是三色标记回收的理论了。 非常简单吧， 至少在STW(STOP THE WORLD)的情况下.</p>
 
-<p>但是在mutator（非GC代码，用户的代码）和GC同时工作的时候要满足 <strong>黑色对象只会引用灰色的对象或其他黑色对象。</strong> 变得复杂起来了。</p>
+<p>但是在mutator（mutator 与 collector分别是执行应用程序与执行GC）和GC同时工作的时候要满足 <strong>黑色对象只会引用灰色的对象或其他黑色对象。</strong> 变得复杂起来了。</p>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/垃圾回收/两色标记回收/" title="两色标记回收">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/redis/redis的hash表/" title="redis的hash表">Next &rarr;</a></li>
+            <li class="next"><a href="/垃圾回收/两色标记回收/" title="两色标记回收">Next &rarr;</a></li>
           
           
         </ul>

@@ -90,6 +90,32 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/垃圾回收/三色标记回收/">三色标记回收</a> <span class="date">2015-05-15</span></h3>
+
+  <h2>三色标记回收</h2>
+
+<p>三色标记回收算法中的3个颜色分别是 白、黑、灰.三色标记回收算法大致如下:</p>
+
+<ol>
+<li>将初始化的对象置为白色</li>
+<li>所有根(全局变量或栈上的变量)可及的对象置为灰色</li>
+<li>遍历这些被置位灰色的对象，灰色对象引用到的对象都置为灰色，完成对灰色变量的遍历后，将灰色对象置为黑色</li>
+<li>继续遍历其他被灰色对象</li>
+<li>所有灰色对象遍历完后，就只会剩下黑色的和白色的对象</li>
+<li>所有这些黑色的对象都是根可达的，白色的都是根不可达的，白色对象都删除掉。</li>
+</ol>
+
+<p>以上步骤就是三色标记回收的理论了。 非常简单吧， 至少在STW(STOP THE WORLD)的情况下.</p>
+
+<p>但是在mutator（mutator 与 collector分别是执行应用程序与执行GC）和GC同时工作的时候要满足 <strong>黑色对象只会引用灰色的对象或其他黑色对象。</strong> 变得复杂起来了。</p>
+
+
+  <div class="more">
+    <a href="/垃圾回收/三色标记回收/" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/垃圾回收/两色标记回收/">两色标记回收</a> <span class="date">2015-05-15</span></h3>
 
   <h2>两色标记回收</h2>
@@ -112,32 +138,6 @@
 </div>
 
 <div class="post">
-  <h3 class="title"><a href="/垃圾回收/三色标记回收/">三色标记回收</a> <span class="date">2015-05-15</span></h3>
-
-  <h2>三色标记回收</h2>
-
-<p>三色标记回收算法中的3个颜色分别是 白、黑、灰.三色标记回收算法大致如下:</p>
-
-<ol>
-<li>将初始化的对象置为白色</li>
-<li>所有根(全局变量或栈上的变量)可及的对象置为灰色</li>
-<li>遍历这些被置位灰色的对象，灰色对象引用到的对象都置为灰色，完成对灰色变量的遍历后，将灰色对象置为黑色</li>
-<li>继续遍历其他被灰色对象</li>
-<li>所有灰色对象遍历完后，就只会剩下黑色的和白色的对象</li>
-<li>所有这些黑色的对象都是根可达的，白色的都是根不可达的，白色对象都删除掉。</li>
-</ol>
-
-<p>以上步骤就是三色标记回收的理论了。 非常简单吧， 至少在STW(STOP THE WORLD)的情况下.</p>
-
-<p>但是在mutator（非GC代码，用户的代码）和GC同时工作的时候要满足 <strong>黑色对象只会引用灰色的对象或其他黑色对象。</strong> 变得复杂起来了。</p>
-
-
-  <div class="more">
-    <a href="/垃圾回收/三色标记回收/" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
   <h3 class="title"><a href="/redis/redis的hash表/">redis的hash表</a> <span class="date">2015-05-10</span></h3>
 
   <h2>redis的hash表</h2>
@@ -147,23 +147,23 @@
 <p>hash表添加KEY-VALUE</p>
 
 <ol>
-<li>将KEY计算hash，将KEY的hash值与bulks数求莫后找到对应bulk. 如果bulk有值循环整个bulk对应的KEY-VALUE 如果bulk中的KEY与加入的KEY相等 就覆盖其VALUE， 如果不等就追加到bulk后面。</li>
-<li>达到占用bulks的阀值expand bulks, 遍历已有的数据重新加入扩展后的bulks中(rehashing)。</li>
+<li>将KEY计算hash，将KEY的hash值与slots数求莫后找到对应slot. 如果slot有值循环整个slot对应的KEY-VALUE 如果slot中的KEY与加入的KEY相等 就覆盖其VALUE， 如果不等就追加到slot后面。</li>
+<li>达到占用slots的阀值expand slots, 遍历已有的数据重新加入扩展后的slots中(rehashing)。</li>
 <li>未达到阀值，完成hash插入操作。</li>
 </ol>
 
 <p>hash表删除KEY</p>
 
 <ol>
-<li>将KEY计算hash，将KEY的hash值与bulks数求莫后 找到对应的bulk。</li>
-<li>遍历整个bulk依次对比KEY， 找到与KEY相等的KEY-VALUE将其移除。</li>
+<li>将KEY计算hash，将KEY的hash值与slots数求莫后 找到对应的slot。</li>
+<li>遍历整个slot依次对比KEY， 找到与KEY相等的KEY-VALUE将其移除。</li>
 </ol>
 
 <p>hash表查找KEY的对象</p>
 
 <ol>
-<li>将KEY计算hash，将KEY的hash值与bulks数求莫后 找到对应的bulk。</li>
-<li>遍历整个bulk依次对比KEY， 找到与KEY相等的KEY-VALUE将VALUE返回。</li>
+<li>将KEY计算hash，将KEY的hash值与slots数求莫后 找到对应的slot。</li>
+<li>遍历整个slot依次对比KEY， 找到与KEY相等的KEY-VALUE将VALUE返回。</li>
 </ol>
 
 
