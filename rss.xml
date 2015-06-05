@@ -3,7 +3,7 @@
   <channel>
     <title>Joinhack&#39;s Blog</title>
     <link>http://sample.com</link>
-    <pubDate>2015-06-05 06:29:05 +0800</pubDate>
+    <pubDate>2015-06-05 06:30:09 +0800</pubDate>
     <item>
       <title>读书笔记</title>
       <link>http://sample.com/read mark/读书笔记/</link>
@@ -21,7 +21,7 @@ not a given value in that region is a reference.&amp;rdquo;&lt;/p&gt;
 &lt;p&gt;需要额外的信息来描述栈上的当前值是否是指向的堆(指针), 标记额外值有以下方式。&lt;/p&gt;
 
 &lt;p&gt;1.标记法(tagging) 值本身携带自描述信息
-2.stack map 通过编译器找出偏移值&lt;/p&gt;
+2.stack map 通过编译器找出偏移信息&lt;/p&gt;
 </description>
     </item>
     <item>
