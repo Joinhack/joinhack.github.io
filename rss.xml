@@ -3,7 +3,20 @@
   <channel>
     <title>Joinhack&#39;s Blog</title>
     <link>http://sample.com</link>
-    <pubDate>2015-05-22 06:01:24 +0800</pubDate>
+    <pubDate>2015-06-05 05:27:12 +0800</pubDate>
+    <item>
+      <title>读书笔记</title>
+      <link>http://sample.com/read mark/读书笔记/</link>
+      <pubDate>2015-06-05 12:00:00 +0800</pubDate>
+      <description>&lt;p&gt;保守GC(conservative collector) 的缺点&lt;/p&gt;
+
+&lt;p&gt;1.不能保证当前值是否是指向堆，也就是会被误认. 文章&lt;a href=&#34;http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.47.6924&amp;amp;rep=rep1&amp;amp;type=pdf&#34;&gt;Finding References in Java™&lt;/a&gt; 有相关描述，原文&amp;rdquo; A
+conservative collector knows only that some region of memory may contain references, but doesn’t know whether or
+not a given value in that region is a reference.&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;2.由于上面的不确定性造成在想移动对象的时候，没有办法修改栈上对应的值。因此保守GC不能出现在对象可移动的GC算法, 比如mark-compact, copy等。&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>三色标记回收</title>
       <link>http://sample.com/垃圾回收/三色标记回收/</link>
