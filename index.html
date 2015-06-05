@@ -94,15 +94,44 @@
 
   <p>保守GC(conservative collector) 的缺点</p>
 
-<p>1.不能保证当前值是否是指向堆，也就是会被误认. 文章<a href="http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.47.6924&amp;rep=rep1&amp;type=pdf">Finding References in Java™</a> 有相关描述，原文&rdquo; A
+<p>1.不能保证栈上当前值是否是指向堆(指针)，也就是会被误认. 文章<a href="http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.47.6924&amp;rep=rep1&amp;type=pdf">Finding References in Java™</a> 有相关描述，原文&rdquo; A
 conservative collector knows only that some region of memory may contain references, but doesn’t know whether or
 not a given value in that region is a reference.&rdquo;</p>
 
 <p>2.由于上面的不确定性造成在想移动对象的时候，没有办法修改栈上对应的值。因此保守GC不能出现在对象可移动的GC算法, 比如mark-compact, copy等。</p>
 
+<p>精确GC(exact)的缺点</p>
+
+<p>需要额外的信息来描述栈上的当前值是否是指向的堆(指针), 标记额外值有以下方式。</p>
+
+<p>1.标记法(tagging) 值本身携带自描述信息
+2.stack map 通过编译器找出偏移值</p>
+
 
   <div class="more">
     <a href="/read mark/读书笔记/" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/垃圾回收/两色标记回收/">两色标记回收</a> <span class="date">2015-05-15</span></h3>
+
+  <h2>两色标记回收</h2>
+
+<p>两色垃圾回收算法中的2个颜色分别是 白、黑. 算法大致如下:</p>
+
+<ol>
+<li>将初始化的对象置为白色</li>
+<li>所有根(全局变量或栈上的变量)可及的对象置为黑色</li>
+<li>清理所有白色对象</li>
+<li>将幸存的黑色对象全部置为白色</li>
+</ol>
+
+<p>这应该是最简单的mark-sweep算法. Lua5.0 就是采用的这种算法。 这种算法的缺点一目了然。 不是增量的GC算法。因此GC过程中mutator肯定是被paused的。</p>
+
+
+  <div class="more">
+    <a href="/垃圾回收/两色标记回收/" class="btn">read more..</a>
   </div>
 </div>
 
@@ -129,28 +158,6 @@ not a given value in that region is a reference.&rdquo;</p>
 
   <div class="more">
     <a href="/垃圾回收/三色标记回收/" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/垃圾回收/两色标记回收/">两色标记回收</a> <span class="date">2015-05-15</span></h3>
-
-  <h2>两色标记回收</h2>
-
-<p>两色垃圾回收算法中的2个颜色分别是 白、黑. 算法大致如下:</p>
-
-<ol>
-<li>将初始化的对象置为白色</li>
-<li>所有根(全局变量或栈上的变量)可及的对象置为黑色</li>
-<li>清理所有白色对象</li>
-<li>将幸存的黑色对象全部置为白色</li>
-</ol>
-
-<p>这应该是最简单的mark-sweep算法. Lua5.0 就是采用的这种算法。 这种算法的缺点一目了然。 不是增量的GC算法。因此GC过程中mutator肯定是被paused的。</p>
-
-
-  <div class="more">
-    <a href="/垃圾回收/两色标记回收/" class="btn">read more..</a>
   </div>
 </div>
 

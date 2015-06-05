@@ -85,11 +85,18 @@
   <div class="span8">
     <p>保守GC(conservative collector) 的缺点</p>
 
-<p>1.不能保证当前值是否是指向堆，也就是会被误认. 文章<a href="http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.47.6924&amp;rep=rep1&amp;type=pdf">Finding References in Java™</a> 有相关描述，原文&rdquo; A
+<p>1.不能保证栈上当前值是否是指向堆(指针)，也就是会被误认. 文章<a href="http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.47.6924&amp;rep=rep1&amp;type=pdf">Finding References in Java™</a> 有相关描述，原文&rdquo; A
 conservative collector knows only that some region of memory may contain references, but doesn’t know whether or
 not a given value in that region is a reference.&rdquo;</p>
 
 <p>2.由于上面的不确定性造成在想移动对象的时候，没有办法修改栈上对应的值。因此保守GC不能出现在对象可移动的GC算法, 比如mark-compact, copy等。</p>
+
+<p>精确GC(exact)的缺点</p>
+
+<p>需要额外的信息来描述栈上的当前值是否是指向的堆(指针), 标记额外值有以下方式。</p>
+
+<p>1.标记法(tagging) 值本身携带自描述信息
+2.stack map 通过编译器找出偏移值</p>
 
     <hr>
     <div class="pagination">
@@ -103,7 +110,7 @@ not a given value in that region is a reference.&rdquo;</p>
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/垃圾回收/三色标记回收/" title="三色标记回收">Next &rarr;</a></li>
+            <li class="next"><a href="/垃圾回收/两色标记回收/" title="两色标记回收">Next &rarr;</a></li>
           
           
         </ul>

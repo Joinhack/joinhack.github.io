@@ -3,18 +3,43 @@
   <channel>
     <title>Joinhack&#39;s Blog</title>
     <link>http://sample.com</link>
-    <pubDate>2015-06-05 05:27:12 +0800</pubDate>
+    <pubDate>2015-06-05 06:29:05 +0800</pubDate>
     <item>
       <title>读书笔记</title>
       <link>http://sample.com/read mark/读书笔记/</link>
       <pubDate>2015-06-05 12:00:00 +0800</pubDate>
       <description>&lt;p&gt;保守GC(conservative collector) 的缺点&lt;/p&gt;
 
-&lt;p&gt;1.不能保证当前值是否是指向堆，也就是会被误认. 文章&lt;a href=&#34;http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.47.6924&amp;amp;rep=rep1&amp;amp;type=pdf&#34;&gt;Finding References in Java™&lt;/a&gt; 有相关描述，原文&amp;rdquo; A
+&lt;p&gt;1.不能保证栈上当前值是否是指向堆(指针)，也就是会被误认. 文章&lt;a href=&#34;http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.47.6924&amp;amp;rep=rep1&amp;amp;type=pdf&#34;&gt;Finding References in Java™&lt;/a&gt; 有相关描述，原文&amp;rdquo; A
 conservative collector knows only that some region of memory may contain references, but doesn’t know whether or
 not a given value in that region is a reference.&amp;rdquo;&lt;/p&gt;
 
 &lt;p&gt;2.由于上面的不确定性造成在想移动对象的时候，没有办法修改栈上对应的值。因此保守GC不能出现在对象可移动的GC算法, 比如mark-compact, copy等。&lt;/p&gt;
+
+&lt;p&gt;精确GC(exact)的缺点&lt;/p&gt;
+
+&lt;p&gt;需要额外的信息来描述栈上的当前值是否是指向的堆(指针), 标记额外值有以下方式。&lt;/p&gt;
+
+&lt;p&gt;1.标记法(tagging) 值本身携带自描述信息
+2.stack map 通过编译器找出偏移值&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>两色标记回收</title>
+      <link>http://sample.com/垃圾回收/两色标记回收/</link>
+      <pubDate>2015-05-15 12:00:00 +0800</pubDate>
+      <description>&lt;h2&gt;两色标记回收&lt;/h2&gt;
+
+&lt;p&gt;两色垃圾回收算法中的2个颜色分别是 白、黑. 算法大致如下:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;将初始化的对象置为白色&lt;/li&gt;
+&lt;li&gt;所有根(全局变量或栈上的变量)可及的对象置为黑色&lt;/li&gt;
+&lt;li&gt;清理所有白色对象&lt;/li&gt;
+&lt;li&gt;将幸存的黑色对象全部置为白色&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;这应该是最简单的mark-sweep算法. Lua5.0 就是采用的这种算法。 这种算法的缺点一目了然。 不是增量的GC算法。因此GC过程中mutator肯定是被paused的。&lt;/p&gt;
 </description>
     </item>
     <item>
@@ -37,24 +62,6 @@ not a given value in that region is a reference.&amp;rdquo;&lt;/p&gt;
 &lt;p&gt;以上步骤就是三色标记回收的理论了。 非常简单吧， 至少在STW(STOP THE WORLD)的情况下.&lt;/p&gt;
 
 &lt;p&gt;但是在mutator（mutator 与 collector分别是执行应用程序与执行GC）和GC同时工作的时候要满足 &lt;strong&gt;黑色对象只会引用灰色的对象或其他黑色对象。&lt;/strong&gt; 变得复杂起来了。&lt;/p&gt;
-</description>
-    </item>
-    <item>
-      <title>两色标记回收</title>
-      <link>http://sample.com/垃圾回收/两色标记回收/</link>
-      <pubDate>2015-05-15 12:00:00 +0800</pubDate>
-      <description>&lt;h2&gt;两色标记回收&lt;/h2&gt;
-
-&lt;p&gt;两色垃圾回收算法中的2个颜色分别是 白、黑. 算法大致如下:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;将初始化的对象置为白色&lt;/li&gt;
-&lt;li&gt;所有根(全局变量或栈上的变量)可及的对象置为黑色&lt;/li&gt;
-&lt;li&gt;清理所有白色对象&lt;/li&gt;
-&lt;li&gt;将幸存的黑色对象全部置为白色&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;这应该是最简单的mark-sweep算法. Lua5.0 就是采用的这种算法。 这种算法的缺点一目了然。 不是增量的GC算法。因此GC过程中mutator肯定是被paused的。&lt;/p&gt;
 </description>
     </item>
     <item>
