@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <title>首页</title>
   
-    <meta name="author" content="Join Gong">
+    <meta name="author" content="Firstname Lastname">
 
     <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
     <!--[if lt IE 9]>
@@ -31,7 +31,7 @@
     <div class="navbar">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="/">Joinhack&#39;s Blog</a>
+          <a class="brand" href="/">Blog Title</a>
           <ul class="nav">
             
               
@@ -115,28 +115,6 @@ not a given value in that region is a reference.&rdquo;</p>
 </div>
 
 <div class="post">
-  <h3 class="title"><a href="/垃圾回收/两色标记回收/">两色标记回收</a> <span class="date">2015-05-15</span></h3>
-
-  <h2>两色标记回收</h2>
-
-<p>两色垃圾回收算法中的2个颜色分别是 白、黑. 算法大致如下:</p>
-
-<ol>
-<li>将初始化的对象置为白色</li>
-<li>所有根(全局变量或栈上的变量)可及的对象置为黑色</li>
-<li>清理所有白色对象</li>
-<li>将幸存的黑色对象全部置为白色</li>
-</ol>
-
-<p>这应该是最简单的mark-sweep算法. Lua5.0 就是采用的这种算法。 这种算法的缺点一目了然。 不是增量的GC算法。因此GC过程中mutator肯定是被paused的。</p>
-
-
-  <div class="more">
-    <a href="/垃圾回收/两色标记回收/" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
   <h3 class="title"><a href="/垃圾回收/三色标记回收/">三色标记回收</a> <span class="date">2015-05-15</span></h3>
 
   <h2>三色标记回收</h2>
@@ -159,6 +137,28 @@ not a given value in that region is a reference.&rdquo;</p>
 
   <div class="more">
     <a href="/垃圾回收/三色标记回收/" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/垃圾回收/两色标记回收/">两色标记回收</a> <span class="date">2015-05-15</span></h3>
+
+  <h2>两色标记回收</h2>
+
+<p>两色垃圾回收算法中的2个颜色分别是 白、黑. 算法大致如下:</p>
+
+<ol>
+<li>将初始化的对象置为白色</li>
+<li>所有根(全局变量或栈上的变量)可及的对象置为黑色</li>
+<li>清理所有白色对象</li>
+<li>将幸存的黑色对象全部置为白色</li>
+</ol>
+
+<p>这应该是最简单的mark-sweep算法. Lua5.0 就是采用的这种算法。 这种算法的缺点一目了然。 不是增量的GC算法。因此GC过程中mutator肯定是被paused的。</p>
+
+
+  <div class="more">
+    <a href="/垃圾回收/两色标记回收/" class="btn">read more..</a>
   </div>
 </div>
 
@@ -203,7 +203,7 @@ not a given value in that region is a reference.&rdquo;</p>
       </div>
 
       <footer>
-        <p>&copy; Join Gong 2013 
+        <p>&copy; Firstname Lastname 2013 
           with help from <a href="http://github.com/wendal/gor" target="_blank" title="Gor -- Fast Blog">Gor</a>
           and <a href="http://twitter.github.com/bootstrap/" target="_blank">Twitter Bootstrap</a>
 		  and Idea from <a href="http://ruhoh.com" target="_blank" title="The Definitive Technical Blogging Framework">ruhoh</a>

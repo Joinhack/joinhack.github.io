@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <rss version="2.0">
   <channel>
-    <title>Joinhack&#39;s Blog</title>
+    <title>Blog Title</title>
     <link>http://sample.com</link>
-    <pubDate>2015-06-08 02:08:05 +0800</pubDate>
+    <pubDate>2015-06-10 11:09:14 +0800</pubDate>
     <item>
       <title>读书笔记</title>
       <link>http://sample.com/read mark/读书笔记/</link>
@@ -26,24 +26,6 @@ not a given value in that region is a reference.&amp;rdquo;&lt;/p&gt;
 </description>
     </item>
     <item>
-      <title>两色标记回收</title>
-      <link>http://sample.com/垃圾回收/两色标记回收/</link>
-      <pubDate>2015-05-15 12:00:00 +0800</pubDate>
-      <description>&lt;h2&gt;两色标记回收&lt;/h2&gt;
-
-&lt;p&gt;两色垃圾回收算法中的2个颜色分别是 白、黑. 算法大致如下:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;将初始化的对象置为白色&lt;/li&gt;
-&lt;li&gt;所有根(全局变量或栈上的变量)可及的对象置为黑色&lt;/li&gt;
-&lt;li&gt;清理所有白色对象&lt;/li&gt;
-&lt;li&gt;将幸存的黑色对象全部置为白色&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;这应该是最简单的mark-sweep算法. Lua5.0 就是采用的这种算法。 这种算法的缺点一目了然。 不是增量的GC算法。因此GC过程中mutator肯定是被paused的。&lt;/p&gt;
-</description>
-    </item>
-    <item>
       <title>三色标记回收</title>
       <link>http://sample.com/垃圾回收/三色标记回收/</link>
       <pubDate>2015-05-15 12:00:00 +0800</pubDate>
@@ -63,6 +45,24 @@ not a given value in that region is a reference.&amp;rdquo;&lt;/p&gt;
 &lt;p&gt;以上步骤就是三色标记回收的理论了。 非常简单吧， 至少在STW(STOP THE WORLD)的情况下.&lt;/p&gt;
 
 &lt;p&gt;但是在mutator（mutator 与 collector分别是执行应用程序与执行GC）和GC同时工作的时候要满足 &lt;strong&gt;黑色对象只会引用灰色的对象或其他黑色对象。&lt;/strong&gt; 变得复杂起来了。&lt;/p&gt;
+</description>
+    </item>
+    <item>
+      <title>两色标记回收</title>
+      <link>http://sample.com/垃圾回收/两色标记回收/</link>
+      <pubDate>2015-05-15 12:00:00 +0800</pubDate>
+      <description>&lt;h2&gt;两色标记回收&lt;/h2&gt;
+
+&lt;p&gt;两色垃圾回收算法中的2个颜色分别是 白、黑. 算法大致如下:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;将初始化的对象置为白色&lt;/li&gt;
+&lt;li&gt;所有根(全局变量或栈上的变量)可及的对象置为黑色&lt;/li&gt;
+&lt;li&gt;清理所有白色对象&lt;/li&gt;
+&lt;li&gt;将幸存的黑色对象全部置为白色&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;这应该是最简单的mark-sweep算法. Lua5.0 就是采用的这种算法。 这种算法的缺点一目了然。 不是增量的GC算法。因此GC过程中mutator肯定是被paused的。&lt;/p&gt;
 </description>
     </item>
     <item>
