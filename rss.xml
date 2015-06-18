@@ -3,7 +3,7 @@
   <channel>
     <title>Blog Title</title>
     <link>http://sample.com</link>
-    <pubDate>2015-06-17 06:03:12 +0800</pubDate>
+    <pubDate>2015-06-18 05:35:50 +0800</pubDate>
     <item>
       <title>读书笔记</title>
       <link>http://sample.com/read mark/读书笔记/</link>
@@ -37,7 +37,7 @@ not a given value in that region is a reference.&amp;rdquo;&lt;/p&gt;
 GCObject *luaC_newobj (lua_State *L, int tt, size_t sz)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;在阅读&lt;a href=&#34;https://developers.google.com/v8/design?csw=1#efficient-garbage-collection&#34;&gt;V8设计&lt;/a&gt;的时候发现V8居然被设计成为精准GC方式。原文&amp;rdquo;always knows exactly where all objects and pointers are in memory. This avoids falsely identifying objects as pointers which can result in memory leaks.&amp;rdquo;&lt;/p&gt;
+&lt;p&gt;在阅读&lt;a href=&#34;https://developers.google.com/v8/design?csw=1#efficient-garbage-collection&#34;&gt;V8设计&lt;/a&gt;的时候发现V8居然被设计成为精准GC方式。原文&amp;rdquo;always knows exactly where all objects and pointers are in memory. This avoids falsely identifying objects as pointers which can result in memory leaks.&amp;rdquo; 而文章&lt;a href=&#34;http://jayconrod.com/posts/55/a-tour-of-v8-garbage-collection&#34;&gt;V8 GC 教材&lt;/a&gt;中描述V8通过标记法来完成的精准GC。原文&amp;rdquo;Tagged pointers - With this approach, we reserve a bit at the end of each word to indicate whether it is pointer or data. This approach requires limited compiler support, but it&amp;rsquo;s simple to implement while being fairly efficient. V8 takes this approach&amp;rdquo;&lt;/p&gt;
 </description>
     </item>
     <item>
