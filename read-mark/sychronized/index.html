@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>读书笔记</title>
+    <title>sychronized</title>
   
     <meta name="author" content="Firstname Lastname">
 
@@ -78,41 +78,23 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>读书笔记 </h1>
+  <h1>sychronized </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <p>保守GC(conservative collector) 的缺点</p>
+    <p>Java Object 标记头</p>
 
-<p>1.不能保证栈上当前值是否是指向堆(指针)，也就是会被误认. 文章<a href="http://citeseer.ist.psu.edu/viewdoc/download?doi=10.1.1.47.6924&amp;rep=rep1&amp;type=pdf">Finding References in Java™</a> 有相关描述，原文&rdquo; A
-conservative collector knows only that some region of memory may contain references, but doesn’t know whether or
-not a given value in that region is a reference.&rdquo;</p>
+<p><img src="https://raw.githubusercontent.com/Joinhack/blog/master/images/headmark.jpg" alt="ScreenShot" />
+</p>
 
-<p>2.由于上面的不确定性造成在想移动对象的时候，没有办法修改栈上对应的值。因此保守GC不能出现在对象可移动的GC算法, 比如mark-compact, copy等。</p>
+<p>轻量级锁(light weight lock)</p>
 
-<p>精确GC(exact)的缺点</p>
+<p>当年JVM对轻量级锁的处理<a href="https://www.usenix.org/legacy/event/jvm01/full_papers/dice/dice.pdf">JVM</a></p>
 
-<p>需要额外的信息来描述栈上的当前值是否是指向的堆(指针), 标记额外值有以下方式。</p>
+<p>文中讲到monRec对于过来就是<a href="http://hg.openjdk.java.net/jdk8/jdk8/hotspot/file/87ee5ee27509/src/share/vm/runtime/objectMonitor.hpp?#l77">ObjectMonitor</a></p>
 
-<p>1.标记法(tagging) 值本身携带自描述信息</p>
-
-<p>2.stack map 通过编译器找出偏移信息.</p>
-
-<p>stack map 方式的 倒是常见 java使用的OopMap. golang 使用的BitVector结构（// Information from the compiler about the layout of stack frames.）</p>
-
-<p>这种强类型语言通过编译器的帮助生成相应的信息。那如果是那些弱类型语言（比如lua, javascript）会怎办啦？他们在finder references 会怎么做啦？</p>
-
-<p>lua 是通过将所有GC对象都放入一个链表 这样来避开finder references</p>
-
-<pre><code>/*
-** create a new collectable object (with given type and size) and link
-** it to 'allgc' list.
-*/
-GCObject *luaC_newobj (lua_State *L, int tt, size_t sz)
-</code></pre>
-
-<p>在阅读<a href="https://developers.google.com/v8/design?csw=1#efficient-garbage-collection">V8设计</a>的时候发现V8居然被设计成为精准GC方式。原文&rdquo;always knows exactly where all objects and pointers are in memory. This avoids falsely identifying objects as pointers which can result in memory leaks.&rdquo; 而文章<a href="http://jayconrod.com/posts/55/a-tour-of-v8-garbage-collection">V8 GC 教材</a>中描述V8通过标记法来完成的精准GC。原文&rdquo;Tagged pointers - With this approach, we reserve a bit at the end of each word to indicate whether it is pointer or data. This approach requires limited compiler support, but it&rsquo;s simple to implement while being fairly efficient. V8 takes this approach&rdquo;</p>
+<p>ObjectMontor的<a href="http://hg.openjdk.java.net/jdk8/jdk8/hotspot/file/87ee5ee27509/src/share/vm/runtime/synchronizer.cpp?#l944">分配操作</a>是在Thread空间，因此没得线程安全问题。</p>
 
     <hr>
     <div class="pagination">
@@ -126,7 +108,7 @@ GCObject *luaC_newobj (lua_State *L, int tt, size_t sz)
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/垃圾回收/三色标记回收/" title="三色标记回收">Next &rarr;</a></li>
+            <li class="next"><a href="/read-mark/读书笔记/" title="读书笔记">Next &rarr;</a></li>
           
           
         </ul>
@@ -152,17 +134,17 @@ GCObject *luaC_newobj (lua_State *L, int tt, size_t sz)
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2015-06-05</span></div>
+    <div class="date"><span>2015-08-26</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
     
       <li>
-  <a href="/categories#read mark-ref">read mark <span>1</span></a>
+  <a href="/categories#read-mark-ref">read-mark <span>2</span></a>
 </li>
     
       <li>
-  <a href="/categories#Blog-ref">Blog <span>4</span></a>
+  <a href="/categories#Blog-ref">Blog <span>5</span></a>
 </li>
     
     </ul>
@@ -171,7 +153,7 @@ GCObject *luaC_newobj (lua_State *L, int tt, size_t sz)
     <ul class="tag_box">
     
       <li>
-  <a href="/tags#read mark-ref">read mark <span>1</span></a>
+  <a href="/tags#read-mark jvm-ref">read-mark jvm <span>1</span></a>
 </li>
     
     </ul>
