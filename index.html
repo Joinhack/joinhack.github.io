@@ -90,7 +90,29 @@
 
 
 <div class="post">
-  <h3 class="title"><a href="/read mark/读书笔记/">读书笔记</a> <span class="date">2015-06-05</span></h3>
+  <h3 class="title"><a href="/read-mark/sychronized/">sychronized</a> <span class="date">2015-08-26</span></h3>
+
+  <p>Java Object 标记头</p>
+
+<p><img src="https://raw.githubusercontent.com/Joinhack/blog/master/images/headmark.jpg" alt="ScreenShot" />
+</p>
+
+<p>轻量级锁(light weight lock)</p>
+
+<p>当年JVM对轻量级锁的处理<a href="https://www.usenix.org/legacy/event/jvm01/full_papers/dice/dice.pdf">JVM</a></p>
+
+<p>文中讲到monRec对于过来就是<a href="http://hg.openjdk.java.net/jdk8/jdk8/hotspot/file/87ee5ee27509/src/share/vm/runtime/objectMonitor.hpp?#l77">ObjectMonitor</a></p>
+
+<p>ObjectMontor的<a href="http://hg.openjdk.java.net/jdk8/jdk8/hotspot/file/87ee5ee27509/src/share/vm/runtime/synchronizer.cpp?#l944">分配操作</a>是在Thread空间，因此没得线程安全问题。</p>
+
+
+  <div class="more">
+    <a href="/read-mark/sychronized/" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
+  <h3 class="title"><a href="/read-mark/读书笔记/">读书笔记</a> <span class="date">2015-06-05</span></h3>
 
   <p>保守GC(conservative collector) 的缺点</p>
 
@@ -112,7 +134,7 @@ not a given value in that region is a reference.&rdquo;</p>
 
 
   <div class="more">
-    <a href="/read mark/读书笔记/" class="btn">read more..</a>
+    <a href="/read-mark/读书笔记/" class="btn">read more..</a>
   </div>
 </div>
 

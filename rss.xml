@@ -3,10 +3,28 @@
   <channel>
     <title>Blog Title</title>
     <link>http://sample.com</link>
-    <pubDate>2015-06-18 05:35:50 +0800</pubDate>
+    <pubDate>2015-08-26 12:51:54 +0800</pubDate>
+    <item>
+      <title>sychronized</title>
+      <link>http://sample.com/read-mark/sychronized/</link>
+      <pubDate>2015-08-26 12:00:00 +0800</pubDate>
+      <description>&lt;p&gt;Java Object 标记头&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/Joinhack/blog/master/images/headmark.jpg&#34; alt=&#34;ScreenShot&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;轻量级锁(light weight lock)&lt;/p&gt;
+
+&lt;p&gt;当年JVM对轻量级锁的处理&lt;a href=&#34;https://www.usenix.org/legacy/event/jvm01/full_papers/dice/dice.pdf&#34;&gt;JVM&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;文中讲到monRec对于过来就是&lt;a href=&#34;http://hg.openjdk.java.net/jdk8/jdk8/hotspot/file/87ee5ee27509/src/share/vm/runtime/objectMonitor.hpp?#l77&#34;&gt;ObjectMonitor&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;ObjectMontor的&lt;a href=&#34;http://hg.openjdk.java.net/jdk8/jdk8/hotspot/file/87ee5ee27509/src/share/vm/runtime/synchronizer.cpp?#l944&#34;&gt;分配操作&lt;/a&gt;是在Thread空间，因此没得线程安全问题。&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>读书笔记</title>
-      <link>http://sample.com/read mark/读书笔记/</link>
+      <link>http://sample.com/read-mark/读书笔记/</link>
       <pubDate>2015-06-05 12:00:00 +0800</pubDate>
       <description>&lt;p&gt;保守GC(conservative collector) 的缺点&lt;/p&gt;
 
