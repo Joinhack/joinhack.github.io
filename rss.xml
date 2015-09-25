@@ -3,13 +3,12 @@
   <channel>
     <title>Blog Title</title>
     <link>http://sample.com</link>
-    <pubDate>2015-09-25 03:48:29 +0800</pubDate>
+    <pubDate>2015-09-25 03:50:47 +0800</pubDate>
     <item>
       <title>stack</title>
       <link>http://sample.com/read-mark/stack/</link>
       <pubDate>2015-09-25 12:00:00 +0800</pubDate>
-      <description>&lt;p&gt;&lt;img src=&#34;https://docs.google.com/document/d/1wAaf1rYoM4S4gtnPh0zOlGzWtrZFQ5suE8qr2sD8uWQ/pub&#34; alt=&#34;Contiguous stack&#34; /&gt;
-&lt;/p&gt;
+      <description>&lt;p&gt;&lt;a href=&#34;https://docs.google.com/document/d/1wAaf1rYoM4S4gtnPh0zOlGzWtrZFQ5suE8qr2sD8uWQ/pub&#34;&gt;Contiguous stack&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2&gt;split stack原理与问题&lt;/h2&gt;
 
