@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>三色标记回收</title>
+    <title>stack</title>
   
     <meta name="author" content="Firstname Lastname">
 
@@ -78,41 +78,59 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>三色标记回收 </h1>
+  <h1>stack </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <h2>三色标记回收</h2>
+    <p><img src="https://docs.google.com/document/d/1wAaf1rYoM4S4gtnPh0zOlGzWtrZFQ5suE8qr2sD8uWQ/pub" alt="Contiguous stack" />
+</p>
 
-<p>三色标记回收算法中的3个颜色分别是 白、黑、灰.三色标记回收算法大致如下:</p>
+<h2>split stack原理与问题</h2>
 
 <ol>
-<li>将初始化的对象置为白色</li>
-<li>所有根(全局变量或栈上的变量)可及的对象置为灰色</li>
-<li>遍历这些被置位灰色的对象，灰色对象引用到的对象都置为灰色，完成对灰色变量的遍历后，将灰色对象置为黑色</li>
-<li>继续遍历其他被灰色对象</li>
-<li>所有灰色对象遍历完后，就只会剩下黑色的和白色的对象</li>
-<li>所有这些黑色的对象都是根可达的，白色的都是根不可达的，白色对象都删除掉。</li>
+<li><p>栈满后每次调用将使用新的stack， 当调用返回会释放栈。如果同样的调用反复发生在循环里面 alloc/free的导致严重的消耗。</p></li>
+
+<li><p>栈的申请与释放工作不会停止的（这里我的理解是每次要将当前栈大小传递给函数），都有额外的工作需要做（检查工作负担很重啊）。</p></li>
 </ol>
 
-<p>以上步骤就是三色标记回收的理论了。 非常简单吧， 至少在STW(STOP THE WORLD)的情况下.</p>
+<p>原文：</p>
 
-<p>但是在mutator（mutator 与 collector分别是执行应用程序与执行GC）和GC同时工作的时候要满足 <strong>黑色对象只会引用灰色的对象或其他黑色对象。</strong> 变得复杂起来了。</p>
+<p>Current split stack mechanism has a “hot split” problem - if the stack is almost full, a call will force a new stack chunk to be allocated.  When that call returns, the new stack chunk is freed.  If the same call happens repeatedly in a tight loop, the overhead of the alloc/free causes significant overhead.</p>
+
+<p>Stack allocation/deallocation work is never complete with split stacks - every time the stack size passes a threshold in either direction, extra work is required.</p>
+
+<h2>Contiguous stack:</h2>
+
+<p>Contiguous stack 用于避免split stack带来的问题。</p>
+
+<p>Contiguous stack原理就是当栈要用完的时候， 申请一个新的更大的， 将老栈数据拷贝进新栈， 当然还有一个麻烦的东西要做，指针（指向栈的指针）调整。</p>
+
+<p>当检查（比split stack的检查优势）到当前栈大小不够时就要做copy stack工作了。</p>
+
+<ol>
+<li><p>分配一个新的更大的栈。</p></li>
+
+<li><p>拷贝老栈数据到新栈。</p></li>
+
+<li><p>调整真正的指针（我的理解是通过<a href="http://joinhack.github.io/read-mark/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/">stack map</a>辨别指针）</p></li>
+
+<li><p>调整指向栈的指针。</p></li>
+</ol>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/read-mark/读书笔记/" title="读书笔记">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/垃圾回收/两色标记回收/" title="两色标记回收">Next &rarr;</a></li>
+            <li class="next"><a href="/read-mark/sychronized/" title="sychronized">Next &rarr;</a></li>
           
           
         </ul>
@@ -138,13 +156,13 @@
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2015-05-15</span></div>
+    <div class="date"><span>2015-09-25</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
     
       <li>
-  <a href="/categories#垃圾回收-ref">垃圾回收 <span>2</span></a>
+  <a href="/categories#read-mark-ref">read-mark <span>3</span></a>
 </li>
     
       <li>
@@ -157,11 +175,7 @@
     <ul class="tag_box">
     
       <li>
-  <a href="/tags#垃圾回收-ref">垃圾回收 <span>2</span></a>
-</li>
-    
-      <li>
-  <a href="/tags#mark-sweep-ref">mark-sweep <span>2</span></a>
+  <a href="/tags#stack-ref">stack <span>1</span></a>
 </li>
     
     </ul>

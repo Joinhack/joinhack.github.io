@@ -3,7 +3,47 @@
   <channel>
     <title>Blog Title</title>
     <link>http://sample.com</link>
-    <pubDate>2015-08-26 12:51:54 +0800</pubDate>
+    <pubDate>2015-09-25 03:48:29 +0800</pubDate>
+    <item>
+      <title>stack</title>
+      <link>http://sample.com/read-mark/stack/</link>
+      <pubDate>2015-09-25 12:00:00 +0800</pubDate>
+      <description>&lt;p&gt;&lt;img src=&#34;https://docs.google.com/document/d/1wAaf1rYoM4S4gtnPh0zOlGzWtrZFQ5suE8qr2sD8uWQ/pub&#34; alt=&#34;Contiguous stack&#34; /&gt;
+&lt;/p&gt;
+
+&lt;h2&gt;split stack原理与问题&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;栈满后每次调用将使用新的stack， 当调用返回会释放栈。如果同样的调用反复发生在循环里面 alloc/free的导致严重的消耗。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;栈的申请与释放工作不会停止的（这里我的理解是每次要将当前栈大小传递给函数），都有额外的工作需要做（检查工作负担很重啊）。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;原文：&lt;/p&gt;
+
+&lt;p&gt;Current split stack mechanism has a “hot split” problem - if the stack is almost full, a call will force a new stack chunk to be allocated.  When that call returns, the new stack chunk is freed.  If the same call happens repeatedly in a tight loop, the overhead of the alloc/free causes significant overhead.&lt;/p&gt;
+
+&lt;p&gt;Stack allocation/deallocation work is never complete with split stacks - every time the stack size passes a threshold in either direction, extra work is required.&lt;/p&gt;
+
+&lt;h2&gt;Contiguous stack:&lt;/h2&gt;
+
+&lt;p&gt;Contiguous stack 用于避免split stack带来的问题。&lt;/p&gt;
+
+&lt;p&gt;Contiguous stack原理就是当栈要用完的时候， 申请一个新的更大的， 将老栈数据拷贝进新栈， 当然还有一个麻烦的东西要做，指针（指向栈的指针）调整。&lt;/p&gt;
+
+&lt;p&gt;当检查（比split stack的检查优势）到当前栈大小不够时就要做copy stack工作了。&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;分配一个新的更大的栈。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;拷贝老栈数据到新栈。&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;调整真正的指针（我的理解是通过&lt;a href=&#34;http://joinhack.github.io/read-mark/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/&#34;&gt;stack map&lt;/a&gt;辨别指针）&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;调整指向栈的指针。&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</description>
+    </item>
     <item>
       <title>sychronized</title>
       <link>http://sample.com/read-mark/sychronized/</link>

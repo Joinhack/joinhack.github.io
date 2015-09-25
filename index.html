@@ -90,6 +90,34 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/read-mark/stack/">stack</a> <span class="date">2015-09-25</span></h3>
+
+  <p><img src="https://docs.google.com/document/d/1wAaf1rYoM4S4gtnPh0zOlGzWtrZFQ5suE8qr2sD8uWQ/pub" alt="Contiguous stack" />
+</p>
+
+<h2>split stack原理与问题</h2>
+
+<ol>
+<li><p>栈满后每次调用将使用新的stack， 当调用返回会释放栈。如果同样的调用反复发生在循环里面 alloc/free的导致严重的消耗。</p></li>
+
+<li><p>栈的申请与释放工作不会停止的（这里我的理解是每次要将当前栈大小传递给函数），都有额外的工作需要做（检查工作负担很重啊）。</p></li>
+</ol>
+
+<p>原文：</p>
+
+<p>Current split stack mechanism has a “hot split” problem - if the stack is almost full, a call will force a new stack chunk to be allocated.  When that call returns, the new stack chunk is freed.  If the same call happens repeatedly in a tight loop, the overhead of the alloc/free causes significant overhead.</p>
+
+<p>Stack allocation/deallocation work is never complete with split stacks - every time the stack size passes a threshold in either direction, extra work is required.</p>
+
+<h2>Contiguous stack:</h2>
+
+
+  <div class="more">
+    <a href="/read-mark/stack/" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/read-mark/sychronized/">sychronized</a> <span class="date">2015-08-26</span></h3>
 
   <p>Java Object 标记头</p>
