@@ -90,6 +90,34 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/read-mark/Memory Ordering/">Memory Ordering</a> <span class="date">2015-10-12</span></h3>
+
+  <h2>Memory Ordering</h2>
+
+<p>Memory Ordering指的cpu访问内存的顺序， 这个术语包含2个层面的意义， 编译时（编译器乱序）与运行时（运行时乱序）。</p>
+
+<p>现今的微处理器都能通过memory ordering特性让cpu重排内存指令， 这种特性叫做<a href="https://en.wikipedia.org/wiki/Out-of-order_execution">out-of-order execution</a>(最终结果是不会受到影响的。)</p>
+
+<p>通过加入memory barrier来屏蔽memory ordering.</p>
+
+<p>编译时memory barrier(GNU):</p>
+
+<p>asm volatile(&ldquo;&rdquo; ::: &ldquo;memory&rdquo;);</p>
+
+<p>或者</p>
+
+<p><strong>asm</strong> <strong>volatile</strong> (&ldquo;&rdquo; ::: &ldquo;memory&rdquo;);</p>
+
+<p>运行时memory barrier(x86):
+asm volatile(&ldquo;mfence&rdquo; ::: &ldquo;memory&rdquo;);</p>
+
+
+  <div class="more">
+    <a href="/read-mark/Memory Ordering/" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/read-mark/stack/">stack</a> <span class="date">2015-09-25</span></h3>
 
   <p><a href="https://docs.google.com/document/d/1wAaf1rYoM4S4gtnPh0zOlGzWtrZFQ5suE8qr2sD8uWQ/pub">Contiguous stack</a></p>
