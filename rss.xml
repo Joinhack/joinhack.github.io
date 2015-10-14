@@ -3,7 +3,7 @@
   <channel>
     <title>Join.G Blog</title>
     <link>http://sample.com</link>
-    <pubDate>2015-10-12 06:53:24 +0800</pubDate>
+    <pubDate>2015-10-14 04:39:52 +0800</pubDate>
     <item>
       <title>Memory Ordering</title>
       <link>http://sample.com/read-mark/Memory Ordering/</link>
@@ -29,12 +29,104 @@ asm volatile(&amp;ldquo;mfence&amp;rdquo; ::: &amp;ldquo;memory&amp;rdquo;);&lt;
 
 &lt;p&gt;更多详细的需要查看&lt;a href=&#34;https://en.wikipedia.org/wiki/Memory_ordering&#34;&gt;Memory Ordering&lt;/a&gt;&lt;/p&gt;
 
+&lt;hr /&gt;
+
+&lt;h2&gt;编译时Memory Ordering&lt;/h2&gt;
+
+&lt;p&gt;编译时的reordering发生的原因是编译进行性能优化产生的。&lt;/p&gt;
+
+&lt;p&gt;通过下面例子来重现编译器的reordering&lt;/p&gt;
+
+&lt;p&gt;测试环境:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;* gcc (GCC) 4.4.7 20120313 (Red Hat 4.4.7-3)
+* CentOS Linux release 6.0 (Final)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;代码
+cpp
+int A, B;&lt;/p&gt;
+
+&lt;p&gt;void test()
+{
+    A = B + 1;
+    B = 0;
+}
+&lt;/p&gt;
+
+&lt;p&gt;首先来看看在不使用优化参数的情况生成的指令， 使用以下命令。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;shell&#34;&gt;$gcc -masm=intel  -S -o - test.c
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;输出的结果(关键部分)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;asm&#34;&gt;mov eax, DWORD PTR B[rip]  #将B放入寄存器eax
+add eax, 1                 #寄存器eax加1，结果还是在eax
+mov DWORD PTR A[rip], eax  #将eax值放入A
+mov DWORD PTR B[rip], 0    #将0 放入B
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里就是未乱序的情况下的输出。前三句完成操作A = B+1， 最后一句完成B = 0&lt;/p&gt;
+
+&lt;p&gt;下面使用优化参数-O2&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;shell&#34;&gt;$gcc -masm=intel -O2 -S -o - test.c
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;输出的结果(关键部分)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;asm&#34;&gt;mov eax, DWORD PTR B[rip]  #将B放入寄存器eax
+mov DWORD PTR B[rip], 0    #将0 放入B
+add eax, 1                 #寄存器eax加1，结果还是在eax   
+mov DWORD PTR A[rip], eax  #将eax值放入A
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里就是乱序后的输出。
+B = 0的操作， 插入了到中间， 这个中间的意思是完成整个操作后对A进行复制看做一个操作。&lt;/p&gt;
+
+&lt;p&gt;编译器为什么可以这么做啦？&lt;/p&gt;
+
+&lt;p&gt;我们可以看到就算乱序后，test方法返回时，最终结果是一致的，并不影响最终结果, 因此编译器可以放心大胆的去乱序进行性能优化。&lt;/p&gt;
+
+&lt;p&gt;让编辑器reordering 失效， 可以才用上面说的到的方法，插入asm volatile(&amp;ldquo;&amp;rdquo; ::: &amp;ldquo;memory&amp;rdquo;);&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;cpp&#34;&gt;   A = B + 1;
+   asm volatile(&amp;quot;&amp;quot; ::: &amp;quot;memory&amp;quot;);
+   B = 0;
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;再来看看结果。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;shell&#34;&gt;$gcc -masm=intel -O2 -S -o - test.c
+
+
+...
+
+mov eax, DWORD PTR B[rip]
+add eax, 1
+mov DWORD PTR A[rip], eax
+mov DWORD PTR B[rip], 0
+
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;结果和期待一致.&lt;/p&gt;
+
+&lt;p&gt;更加详细的说明可以参考&lt;a href=&#34;http://preshing.com/20120625/memory-ordering-at-compile-time/&#34;&gt;memory-ordering-at-compile-time&lt;/a&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2&gt;CPU运行时的Memory Ordering&lt;/h2&gt;
+
 &lt;p&gt;&lt;a href=&#34;http://preshing.com/20120515/memory-reordering-caught-in-the-act&#34;&gt;Memory Reordering Caught in the Act&lt;/a&gt;一文中更加详细解释了memory reordering特性&lt;/p&gt;
 
 &lt;p&gt;原文用到的测试代码GCC版本&lt;a href=&#34;https://gist.github.com/Joinhack/2362552462f71d6d79ad&#34;&gt;ordering.cc&lt;/a&gt;(已经支持macos), 可以用于重现运行时memory ordering特性.&lt;/p&gt;
 
-&lt;p&gt;编译命令
-$gcc -o ordering -O2 ordering.cc -lpthread&lt;/p&gt;
+&lt;p&gt;编译命令&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;shell&#34;&gt;$gcc -o ordering -O2 ordering.cc -lpthread
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;当USE_CPU_FENCE=0的时候程序没有加入memory barrier, 运行结果:&lt;/p&gt;
 
@@ -220,6 +312,24 @@ GCObject *luaC_newobj (lua_State *L, int tt, size_t sz)
 </description>
     </item>
     <item>
+      <title>两色标记回收</title>
+      <link>http://sample.com/垃圾回收/两色标记回收/</link>
+      <pubDate>2015-05-15 12:00:00 +0800</pubDate>
+      <description>&lt;h2&gt;两色标记回收&lt;/h2&gt;
+
+&lt;p&gt;两色垃圾回收算法中的2个颜色分别是 白、黑. 算法大致如下:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;将初始化的对象置为白色&lt;/li&gt;
+&lt;li&gt;所有根(全局变量或栈上的变量)可及的对象置为黑色&lt;/li&gt;
+&lt;li&gt;清理所有白色对象&lt;/li&gt;
+&lt;li&gt;将幸存的黑色对象全部置为白色&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;这应该是最简单的mark-sweep算法. Lua5.0 就是采用的这种算法。 这种算法的缺点一目了然。 不是增量的GC算法。因此GC过程中mutator肯定是被paused的。&lt;/p&gt;
+</description>
+    </item>
+    <item>
       <title>三色标记回收</title>
       <link>http://sample.com/垃圾回收/三色标记回收/</link>
       <pubDate>2015-05-15 12:00:00 +0800</pubDate>
@@ -239,24 +349,6 @@ GCObject *luaC_newobj (lua_State *L, int tt, size_t sz)
 &lt;p&gt;以上步骤就是三色标记回收的理论了。 非常简单吧， 至少在STW(STOP THE WORLD)的情况下.&lt;/p&gt;
 
 &lt;p&gt;但是在mutator（mutator 与 collector分别是执行应用程序与执行GC）和GC同时工作的时候要满足 &lt;strong&gt;黑色对象只会引用灰色的对象或其他黑色对象。&lt;/strong&gt; 变得复杂起来了。&lt;/p&gt;
-</description>
-    </item>
-    <item>
-      <title>两色标记回收</title>
-      <link>http://sample.com/垃圾回收/两色标记回收/</link>
-      <pubDate>2015-05-15 12:00:00 +0800</pubDate>
-      <description>&lt;h2&gt;两色标记回收&lt;/h2&gt;
-
-&lt;p&gt;两色垃圾回收算法中的2个颜色分别是 白、黑. 算法大致如下:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;将初始化的对象置为白色&lt;/li&gt;
-&lt;li&gt;所有根(全局变量或栈上的变量)可及的对象置为黑色&lt;/li&gt;
-&lt;li&gt;清理所有白色对象&lt;/li&gt;
-&lt;li&gt;将幸存的黑色对象全部置为白色&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;这应该是最简单的mark-sweep算法. Lua5.0 就是采用的这种算法。 这种算法的缺点一目了然。 不是增量的GC算法。因此GC过程中mutator肯定是被paused的。&lt;/p&gt;
 </description>
     </item>
     <item>
