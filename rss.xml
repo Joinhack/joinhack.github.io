@@ -3,7 +3,7 @@
   <channel>
     <title>Join.G Blog</title>
     <link>http://sample.com</link>
-    <pubDate>2015-10-14 04:39:52 +0800</pubDate>
+    <pubDate>2015-10-15 11:10:55 +0800</pubDate>
     <item>
       <title>Memory Ordering</title>
       <link>http://sample.com/read-mark/Memory Ordering/</link>
@@ -43,16 +43,16 @@ asm volatile(&amp;ldquo;mfence&amp;rdquo; ::: &amp;ldquo;memory&amp;rdquo;);&lt;
 * CentOS Linux release 6.0 (Final)
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;代码
-cpp
-int A, B;&lt;/p&gt;
+&lt;p&gt;代码&lt;/p&gt;
 
-&lt;p&gt;void test()
+&lt;pre&gt;&lt;code class=&#34;cpp&#34;&gt;int A, B;
+
+void test()
 {
     A = B + 1;
     B = 0;
 }
-&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;首先来看看在不使用优化参数的情况生成的指令， 使用以下命令。&lt;/p&gt;
 

@@ -118,16 +118,16 @@ asm volatile(&ldquo;mfence&rdquo; ::: &ldquo;memory&rdquo;);</p>
 * CentOS Linux release 6.0 (Final)
 </code></pre>
 
-<p>代码
-cpp
-int A, B;</p>
+<p>代码</p>
 
-<p>void test()
+<pre><code class="cpp">int A, B;
+
+void test()
 {
     A = B + 1;
     B = 0;
 }
-</p>
+</code></pre>
 
 <p>首先来看看在不使用优化参数的情况生成的指令， 使用以下命令。</p>
 
