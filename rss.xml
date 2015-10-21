@@ -3,7 +3,62 @@
   <channel>
     <title>Join.G Blog</title>
     <link>http://sample.com</link>
-    <pubDate>2015-10-15 02:23:43 +0800</pubDate>
+    <pubDate>2015-10-21 09:58:49 +0800</pubDate>
+    <item>
+      <title>Memory Consistency</title>
+      <link>http://sample.com/read-mark/Memory Consistency/</link>
+      <pubDate>2015-10-21 12:00:00 +0800</pubDate>
+      <description>&lt;h2&gt;内存一致性模型(&lt;a href=&#34;http://www.cs.nmsu.edu/~pfeiffer/classes/573/notes/consistency.html&#34;&gt;Memory Consistency Models&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;注解&lt;/p&gt;
+
+&lt;p&gt;W(var)value: 将变量var赋值为value.&lt;/p&gt;
+
+&lt;p&gt;R(var)value: 读取变量var的值是value.&lt;/p&gt;
+
+&lt;p&gt;例子: W(x)1 将变量x赋值为1.  R(y)3 读取变量y的值为3&lt;/p&gt;
+
+&lt;h2&gt;严格一致性(Strict Consistency)&lt;/h2&gt;
+
+&lt;p&gt;严格一致性的定义：读取地址X返回的是最近写入X的值。（如果没有缓存的cpu，直接通过总线与内存交互，这时就是严格的一致性的内存模型）。&lt;/p&gt;
+
+&lt;p&gt;原文:&amp;ldquo;read to a memory location X returns the value stored by the most recent write operation to X&amp;rdquo;&lt;/p&gt;
+
+&lt;h2&gt;顺序一致性(Sequential Consistency)&lt;/h2&gt;
+
+&lt;p&gt;Lamport对顺序一致性的定义:&amp;ldquo;the result of any execution is the same as if the reads and writes occurred in some order, and the operations of each individual processor appear in this sequence in the order specified by its program.&amp;rdquo;&lt;/p&gt;
+
+&lt;p&gt;这里顺序一致性有2个含义&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;1. 全局观来讲 在读写循序一致的情况所有执行结果是一样的。
+
+2. 单处理器情况下 顺序是被程序指定的。
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2&gt;内存一致性(Cache Coherence)[https://en.wikipedia.org/wiki/Cache_coherence]&lt;/h2&gt;
+
+&lt;p&gt;cache coherence是指共享资源保存到每个cpu cache中的一致性。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://upload.wikimedia.org/wikipedia/commons/thumb/a/a1/Cache_Coherency_Generic.png/370px-Cache_Coherency_Generic.png&#34; alt=&#34;An illustration showing multiple caches of some memory, which acts as a shared resource&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;图中上面的client已经将memory的数据加载到了cache中， 而下面的client修改memory， 这个时候上面的client只读到了cache的数据。而cache coherence就是来解决这种混乱的保持memory与cache的一致性。&lt;/p&gt;
+
+&lt;p&gt;很多时候人们将内存一致性与顺序一致性视为一致的。但是并不是这样的。顺序一致性是全局内存操作的全局视觉，而内存一致性是个局部视觉。下面例子就满足内存一致性但是不满足顺序一致性。&lt;/p&gt;
+
+&lt;pre&gt;&lt;code&gt;P1:  W(x)1 W(y)2
+-----------------------
+P2:        R(x)0 R(x)2 R(x)1 R(y)0 R(y)1
+-----------------------
+P3:        R(y)0 R(y)1 R(x)0 R(x)1
+-----------------------
+P4: W(x)2 W(y)1
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;参考：
+&lt;a href=&#34;http://www.hpl.hp.com/techreports/Compaq-DEC/WRL-95-7.pdf&#34;&gt;Shared Memory Consistency Models&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Memory Ordering</title>
       <link>http://sample.com/read-mark/Memory Ordering/</link>
