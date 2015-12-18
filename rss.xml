@@ -3,7 +3,7 @@
   <channel>
     <title>Join.G Blog</title>
     <link>http://sample.com</link>
-    <pubDate>2015-12-18 02:38:57 +0800</pubDate>
+    <pubDate>2015-12-18 04:49:34 +0800</pubDate>
     <item>
       <title>GDT全局描述表</title>
       <link>http://sample.com/OS/GDT全局描述表/</link>
@@ -36,12 +36,58 @@ mov %ds:(0x20), %ax
 
 &lt;p&gt;这里访问的物理地址就是0x7c0*0x10 + 0x20&lt;/p&gt;
 
-&lt;h2&gt;保护模式的内存地址&lt;/h2&gt;
+&lt;h2&gt;保护模式的内存寻址(32bits)&lt;/h2&gt;
 
-&lt;p&gt;保护模式的&lt;/p&gt;
+&lt;p&gt;保护模式突破实模式的内存限制， 能够使用4G的内存。 保护模式中，内存的管理模式分为两种，段模式和页模式。&lt;/p&gt;
+
+&lt;p&gt;段模式就采用GDT来进行内存管理。GDT在内存中任意位置， 所以lgdt指令用于让cpu设置gdtr的值， gdtr是一个48bits的寄存器。&lt;/p&gt;
+
+&lt;p&gt;gdtr结构如下图:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/Joinhack/blog/master/images/gdtr.png&#34; alt=&#34;gdtr (from OSDev wiki)&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;图片来源于OSWIKI&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;td&gt;Offset&lt;/td&gt;
+&lt;td&gt;Name&lt;/td&gt;
+&lt;td&gt;Description&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0..15&lt;/td&gt;
+&lt;td&gt;Size&lt;/td&gt;
+&lt;td&gt;整个GDT表的大小 2Bytes&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;16..47&lt;/td&gt;
+&lt;td&gt;Offset&lt;/td&gt;
+&lt;td&gt;GDT的入口位置&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;pre&gt;&lt;code class=&#34;asm&#34;&gt;gdtptr:
+    .word   (GdtLen - 1)            /* limit */
+    .long   0
+
+
+lgdt gdtptr 
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;使用lgdt来设置.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/Joinhack/blog/master/images/gdt-descriptor.png&#34; alt=&#34;GDT (from OSDev wiki)&#34; /&gt;
 &lt;/p&gt;
+
+&lt;p&gt;图片来源于OSWIKI&lt;/p&gt;
 
 &lt;table&gt;
 &lt;thead&gt;
@@ -97,10 +143,23 @@ mov %ds:(0x20), %ax
 &lt;/tbody&gt;
 &lt;/table&gt;
 
-&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/Joinhack/blog/master/images/gdtr.png&#34; alt=&#34;gdtr (from OSDev wiki)&#34; /&gt;
-&lt;/p&gt;
+&lt;pre&gt;&lt;code class=&#34;asm&#34;&gt;.macro SEG_DESC Base, Limit, Attr
+    .2byte (\Limit &amp;amp; 0xFFFF)
+    .2byte (\Base &amp;amp; 0xFFFF)
+    .byte  ((\Base &amp;gt;&amp;gt; 16) &amp;amp; 0xFF)
+    .2byte ((\Attr &amp;amp; 0xF0FF) | ((\Limit &amp;gt;&amp;gt; 8) &amp;amp; 0x0F00))
+    .byte  ((\Base &amp;gt;&amp;gt; 24) &amp;amp; 0xFF)
+.endm
 
-&lt;p&gt;图片来源于OSWIKI&lt;/p&gt;
+......
+
+gdt:
+    GDT_DESC_NULL: SEG_DESC 0, 0, 0
+    GDT_DESC_C32: SEG_DESC 0, (c32len - 1), (0x9A | 0x4000)
+    GDT_DESC_VIDEO: SEG_DESC     0xB8000, 0xFFFF, (0x92)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;定义一段宏帮助设定描述。gdt是自定义的全局描述表。&lt;/p&gt;
 </description>
     </item>
     <item>

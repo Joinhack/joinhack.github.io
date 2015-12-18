@@ -111,12 +111,58 @@ mov %ds:(0x20), %ax
 
 <p>这里访问的物理地址就是0x7c0*0x10 + 0x20</p>
 
-<h2>保护模式的内存地址</h2>
+<h2>保护模式的内存寻址(32bits)</h2>
 
-<p>保护模式的</p>
+<p>保护模式突破实模式的内存限制， 能够使用4G的内存。 保护模式中，内存的管理模式分为两种，段模式和页模式。</p>
+
+<p>段模式就采用GDT来进行内存管理。GDT在内存中任意位置， 所以lgdt指令用于让cpu设置gdtr的值， gdtr是一个48bits的寄存器。</p>
+
+<p>gdtr结构如下图:</p>
+
+<p><img src="https://raw.githubusercontent.com/Joinhack/blog/master/images/gdtr.png" alt="gdtr (from OSDev wiki)" />
+</p>
+
+<p>图片来源于OSWIKI</p>
+
+<table>
+<thead>
+<tr>
+<td>Offset</td>
+<td>Name</td>
+<td>Description</td>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>0..15</td>
+<td>Size</td>
+<td>整个GDT表的大小 2Bytes</td>
+</tr>
+
+<tr>
+<td>16..47</td>
+<td>Offset</td>
+<td>GDT的入口位置</td>
+</tr>
+</tbody>
+</table>
+
+<pre><code class="asm">gdtptr:
+    .word   (GdtLen - 1)            /* limit */
+    .long   0
+
+
+lgdt gdtptr 
+
+</code></pre>
+
+<p>使用lgdt来设置.</p>
 
 <p><img src="https://raw.githubusercontent.com/Joinhack/blog/master/images/gdt-descriptor.png" alt="GDT (from OSDev wiki)" />
 </p>
+
+<p>图片来源于OSWIKI</p>
 
 <table>
 <thead>
@@ -172,10 +218,23 @@ mov %ds:(0x20), %ax
 </tbody>
 </table>
 
-<p><img src="https://raw.githubusercontent.com/Joinhack/blog/master/images/gdtr.png" alt="gdtr (from OSDev wiki)" />
-</p>
+<pre><code class="asm">.macro SEG_DESC Base, Limit, Attr
+    .2byte (\Limit &amp; 0xFFFF)
+    .2byte (\Base &amp; 0xFFFF)
+    .byte  ((\Base &gt;&gt; 16) &amp; 0xFF)
+    .2byte ((\Attr &amp; 0xF0FF) | ((\Limit &gt;&gt; 8) &amp; 0x0F00))
+    .byte  ((\Base &gt;&gt; 24) &amp; 0xFF)
+.endm
 
-<p>图片来源于OSWIKI</p>
+......
+
+gdt:
+    GDT_DESC_NULL: SEG_DESC 0, 0, 0
+    GDT_DESC_C32: SEG_DESC 0, (c32len - 1), (0x9A | 0x4000)
+    GDT_DESC_VIDEO: SEG_DESC     0xB8000, 0xFFFF, (0x92)
+</code></pre>
+
+<p>定义一段宏帮助设定描述。gdt是自定义的全局描述表。</p>
 
     <hr>
     <div class="pagination">
