@@ -218,6 +218,87 @@ lgdt gdtptr
 </tbody>
 </table>
 
+<p>这里比较让人迷惑的是BASE与LIMIT不是完整的内存表示，而是分散分布在里面。</p>
+
+<p>Base Address: 32bits基址 分布在在描述符中分成三块存在。 可以指向4G内存的任意地方。</p>
+
+<p>Limit: 20bits的限制， 由于是20bits所以一般情况限制最大值是1M， 但是可以通过设置页粒度值让限制由1M变成1M*4096(4G)</p>
+
+<p><img src="https://raw.githubusercontent.com/Joinhack/blog/master/images/gdt-descriptor-flags2.png" alt="access and flags (from OSDev wiki)" />
+</p>
+
+<table>
+<thead>
+<tr>
+<td>Bit</td>
+<td>Name</td>
+<td>Description</td>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>Pr</td>
+<td>Present</td>
+<td>1 selector 现在不可用， 0 可用.</td>
+</tr>
+
+<tr>
+<td>Privl</td>
+<td>Privilege Level</td>
+<td>3Bits特权级别标识.</td>
+</tr>
+
+<tr>
+<td>Ex</td>
+<td>Executable</td>
+<td>1 表示内存是代码区， 0表示是数据区.</td>
+</tr>
+
+<tr>
+<td>DC(code)</td>
+<td>Direction</td>
+<td>1 表示代码从低优先级开始执行 代码段有效.</td>
+</tr>
+
+<tr>
+<td>DC(data)</td>
+<td>Conforming</td>
+<td>1 端从下向上增加。 0 端从上向下增加.</td>
+</tr>
+
+<tr>
+<td>RW(code)</td>
+<td>Readable</td>
+<td>1 允许读，永远不允许写入</td>
+</tr>
+
+<tr>
+<td>RW(data)</td>
+<td>Readable</td>
+<td>1 允许写入，永远都能读</td>
+</tr>
+
+<tr>
+<td>Ac</td>
+<td>Accessed</td>
+<td>CPU使用此端的时候设置为1， 初始化是0</td>
+</tr>
+
+<tr>
+<td>Gr</td>
+<td>Granularity</td>
+<td>0 表示Limit的单位Byte, 1 limit单位是4096Bytes</td>
+</tr>
+
+<tr>
+<td>Sz</td>
+<td>Size</td>
+<td>0 表示 16-bit 保护模式， 1 表示32位保护模式</td>
+</tr>
+</tbody>
+</table>
+
 <pre><code class="asm">.macro SEG_DESC Base, Limit, Attr
     .2byte (\Limit &amp; 0xFFFF)
     .2byte (\Base &amp; 0xFFFF)

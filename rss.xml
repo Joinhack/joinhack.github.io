@@ -3,7 +3,7 @@
   <channel>
     <title>Join.G Blog</title>
     <link>http://sample.com</link>
-    <pubDate>2015-12-18 04:49:34 +0800</pubDate>
+    <pubDate>2015-12-18 06:30:46 +0800</pubDate>
     <item>
       <title>GDT全局描述表</title>
       <link>http://sample.com/OS/GDT全局描述表/</link>
@@ -139,6 +139,87 @@ lgdt gdtptr
 &lt;td&gt;56..63&lt;/td&gt;
 &lt;td&gt;Base&lt;/td&gt;
 &lt;td&gt;Base的高2Bytes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;这里比较让人迷惑的是BASE与LIMIT不是完整的内存表示，而是分散分布在里面。&lt;/p&gt;
+
+&lt;p&gt;Base Address: 32bits基址 分布在在描述符中分成三块存在。 可以指向4G内存的任意地方。&lt;/p&gt;
+
+&lt;p&gt;Limit: 20bits的限制， 由于是20bits所以一般情况限制最大值是1M， 但是可以通过设置页粒度值让限制由1M变成1M*4096(4G)&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/Joinhack/blog/master/images/gdt-descriptor-flags2.png&#34; alt=&#34;access and flags (from OSDev wiki)&#34; /&gt;
+&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;td&gt;Bit&lt;/td&gt;
+&lt;td&gt;Name&lt;/td&gt;
+&lt;td&gt;Description&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;Pr&lt;/td&gt;
+&lt;td&gt;Present&lt;/td&gt;
+&lt;td&gt;1 selector 现在不可用， 0 可用.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Privl&lt;/td&gt;
+&lt;td&gt;Privilege Level&lt;/td&gt;
+&lt;td&gt;3Bits特权级别标识.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Ex&lt;/td&gt;
+&lt;td&gt;Executable&lt;/td&gt;
+&lt;td&gt;1 表示内存是代码区， 0表示是数据区.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;DC(code)&lt;/td&gt;
+&lt;td&gt;Direction&lt;/td&gt;
+&lt;td&gt;1 表示代码从低优先级开始执行 代码段有效.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;DC(data)&lt;/td&gt;
+&lt;td&gt;Conforming&lt;/td&gt;
+&lt;td&gt;1 端从下向上增加。 0 端从上向下增加.&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;RW(code)&lt;/td&gt;
+&lt;td&gt;Readable&lt;/td&gt;
+&lt;td&gt;1 允许读，永远不允许写入&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;RW(data)&lt;/td&gt;
+&lt;td&gt;Readable&lt;/td&gt;
+&lt;td&gt;1 允许写入，永远都能读&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Ac&lt;/td&gt;
+&lt;td&gt;Accessed&lt;/td&gt;
+&lt;td&gt;CPU使用此端的时候设置为1， 初始化是0&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Gr&lt;/td&gt;
+&lt;td&gt;Granularity&lt;/td&gt;
+&lt;td&gt;0 表示Limit的单位Byte, 1 limit单位是4096Bytes&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;Sz&lt;/td&gt;
+&lt;td&gt;Size&lt;/td&gt;
+&lt;td&gt;0 表示 16-bit 保护模式， 1 表示32位保护模式&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
