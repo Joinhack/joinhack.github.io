@@ -3,7 +3,106 @@
   <channel>
     <title>Join.G Blog</title>
     <link>http://sample.com</link>
-    <pubDate>2015-10-21 10:30:42 +0800</pubDate>
+    <pubDate>2015-12-18 02:38:57 +0800</pubDate>
+    <item>
+      <title>GDT全局描述表</title>
+      <link>http://sample.com/OS/GDT全局描述表/</link>
+      <pubDate>2015-12-18 12:00:00 +0800</pubDate>
+      <description>&lt;h2&gt;GDT全局描述表&lt;/h2&gt;
+
+&lt;p&gt;实模式下内存的地址访问限制是1M， 这是由于8086cpu的使用的寄存器是16位的 而地址总线是20位。1M = 1&amp;lt;&amp;lt;20。&lt;/p&gt;
+
+&lt;p&gt;现在cpu的寄存器早就不是什么16位的了，但是计算机现代计算机启动后还是采用实模式。&lt;/p&gt;
+
+&lt;p&gt;实模式中就有内存访问限制，要突破这个限制，计算机必须进入保护模式。&lt;/p&gt;
+
+&lt;p&gt;实模式中内存寻址才用方式:
+&lt;code&gt;
+Segment:Offset
+&lt;/code&gt;
+Segment 是段寄存器: CS, ES, DS, FS, GS&lt;/p&gt;
+
+&lt;p&gt;转换成物理地址公式
+&lt;code&gt;
+PhysicalAddress = Segment * 16 + Offset
+&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;比如:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;asm&#34;&gt;mov $0x7c0, %ax
+mov %ax, %ds
+mov %ds:(0x20), %ax
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;这里访问的物理地址就是0x7c0*0x10 + 0x20&lt;/p&gt;
+
+&lt;h2&gt;保护模式的内存地址&lt;/h2&gt;
+
+&lt;p&gt;保护模式的&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/Joinhack/blog/master/images/gdt-descriptor.png&#34; alt=&#34;GDT (from OSDev wiki)&#34; /&gt;
+&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;td&gt;Offset&lt;/td&gt;
+&lt;td&gt;Name&lt;/td&gt;
+&lt;td&gt;Description&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;0..15&lt;/td&gt;
+&lt;td&gt;Limit&lt;/td&gt;
+&lt;td&gt;limit的底4Bytes&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;16..31&lt;/td&gt;
+&lt;td&gt;Base&lt;/td&gt;
+&lt;td&gt;base的底4Bytes&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;32..39&lt;/td&gt;
+&lt;td&gt;Base&lt;/td&gt;
+&lt;td&gt;base的中间2Bytes&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;40..47&lt;/td&gt;
+&lt;td&gt;Acess Byte&lt;/td&gt;
+&lt;td&gt;内存访问控制标志字节&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;48..51&lt;/td&gt;
+&lt;td&gt;Limit&lt;/td&gt;
+&lt;td&gt;limit的高4Bytes&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;52..55&lt;/td&gt;
+&lt;td&gt;Flags&lt;/td&gt;
+&lt;td&gt;4个段大小标记&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;56..63&lt;/td&gt;
+&lt;td&gt;Base&lt;/td&gt;
+&lt;td&gt;Base的高2Bytes&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/Joinhack/blog/master/images/gdtr.png&#34; alt=&#34;gdtr (from OSDev wiki)&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;图片来源于OSWIKI&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>Memory Consistency</title>
       <link>http://sample.com/read-mark/Memory Consistency/</link>
@@ -370,6 +469,24 @@ GCObject *luaC_newobj (lua_State *L, int tt, size_t sz)
 </description>
     </item>
     <item>
+      <title>两色标记回收</title>
+      <link>http://sample.com/垃圾回收/两色标记回收/</link>
+      <pubDate>2015-05-15 12:00:00 +0800</pubDate>
+      <description>&lt;h2&gt;两色标记回收&lt;/h2&gt;
+
+&lt;p&gt;两色垃圾回收算法中的2个颜色分别是 白、黑. 算法大致如下:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;将初始化的对象置为白色&lt;/li&gt;
+&lt;li&gt;所有根(全局变量或栈上的变量)可及的对象置为黑色&lt;/li&gt;
+&lt;li&gt;清理所有白色对象&lt;/li&gt;
+&lt;li&gt;将幸存的黑色对象全部置为白色&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;这应该是最简单的mark-sweep算法. Lua5.0 就是采用的这种算法。 这种算法的缺点一目了然。 不是增量的GC算法。因此GC过程中mutator肯定是被paused的。&lt;/p&gt;
+</description>
+    </item>
+    <item>
       <title>三色标记回收</title>
       <link>http://sample.com/垃圾回收/三色标记回收/</link>
       <pubDate>2015-05-15 12:00:00 +0800</pubDate>
@@ -389,24 +506,6 @@ GCObject *luaC_newobj (lua_State *L, int tt, size_t sz)
 &lt;p&gt;以上步骤就是三色标记回收的理论了。 非常简单吧， 至少在STW(STOP THE WORLD)的情况下.&lt;/p&gt;
 
 &lt;p&gt;但是在mutator（mutator 与 collector分别是执行应用程序与执行GC）和GC同时工作的时候要满足 &lt;strong&gt;黑色对象只会引用灰色的对象或其他黑色对象。&lt;/strong&gt; 变得复杂起来了。&lt;/p&gt;
-</description>
-    </item>
-    <item>
-      <title>两色标记回收</title>
-      <link>http://sample.com/垃圾回收/两色标记回收/</link>
-      <pubDate>2015-05-15 12:00:00 +0800</pubDate>
-      <description>&lt;h2&gt;两色标记回收&lt;/h2&gt;
-
-&lt;p&gt;两色垃圾回收算法中的2个颜色分别是 白、黑. 算法大致如下:&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;将初始化的对象置为白色&lt;/li&gt;
-&lt;li&gt;所有根(全局变量或栈上的变量)可及的对象置为黑色&lt;/li&gt;
-&lt;li&gt;清理所有白色对象&lt;/li&gt;
-&lt;li&gt;将幸存的黑色对象全部置为白色&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;这应该是最简单的mark-sweep算法. Lua5.0 就是采用的这种算法。 这种算法的缺点一目了然。 不是增量的GC算法。因此GC过程中mutator肯定是被paused的。&lt;/p&gt;
 </description>
     </item>
     <item>

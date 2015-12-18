@@ -90,6 +90,34 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/OS/GDT全局描述表/">GDT全局描述表</a> <span class="date">2015-12-18</span></h3>
+
+  <h2>GDT全局描述表</h2>
+
+<p>实模式下内存的地址访问限制是1M， 这是由于8086cpu的使用的寄存器是16位的 而地址总线是20位。1M = 1&lt;&lt;20。</p>
+
+<p>现在cpu的寄存器早就不是什么16位的了，但是计算机现代计算机启动后还是采用实模式。</p>
+
+<p>实模式中就有内存访问限制，要突破这个限制，计算机必须进入保护模式。</p>
+
+<p>实模式中内存寻址才用方式:
+<code>
+Segment:Offset
+</code>
+Segment 是段寄存器: CS, ES, DS, FS, GS</p>
+
+<p>转换成物理地址公式
+<code>
+PhysicalAddress = Segment * 16 + Offset
+</code></p>
+
+
+  <div class="more">
+    <a href="/OS/GDT全局描述表/" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/read-mark/Memory Consistency/">Memory Consistency</a> <span class="date">2015-10-21</span></h3>
 
   <h2>内存一致性模型(<a href="http://www.cs.nmsu.edu/~pfeiffer/classes/573/notes/consistency.html">Memory Consistency Models</a>)</h2>
@@ -217,6 +245,28 @@ not a given value in that region is a reference.&rdquo;</p>
 </div>
 
 <div class="post">
+  <h3 class="title"><a href="/垃圾回收/两色标记回收/">两色标记回收</a> <span class="date">2015-05-15</span></h3>
+
+  <h2>两色标记回收</h2>
+
+<p>两色垃圾回收算法中的2个颜色分别是 白、黑. 算法大致如下:</p>
+
+<ol>
+<li>将初始化的对象置为白色</li>
+<li>所有根(全局变量或栈上的变量)可及的对象置为黑色</li>
+<li>清理所有白色对象</li>
+<li>将幸存的黑色对象全部置为白色</li>
+</ol>
+
+<p>这应该是最简单的mark-sweep算法. Lua5.0 就是采用的这种算法。 这种算法的缺点一目了然。 不是增量的GC算法。因此GC过程中mutator肯定是被paused的。</p>
+
+
+  <div class="more">
+    <a href="/垃圾回收/两色标记回收/" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/垃圾回收/三色标记回收/">三色标记回收</a> <span class="date">2015-05-15</span></h3>
 
   <h2>三色标记回收</h2>
@@ -239,28 +289,6 @@ not a given value in that region is a reference.&rdquo;</p>
 
   <div class="more">
     <a href="/垃圾回收/三色标记回收/" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/垃圾回收/两色标记回收/">两色标记回收</a> <span class="date">2015-05-15</span></h3>
-
-  <h2>两色标记回收</h2>
-
-<p>两色垃圾回收算法中的2个颜色分别是 白、黑. 算法大致如下:</p>
-
-<ol>
-<li>将初始化的对象置为白色</li>
-<li>所有根(全局变量或栈上的变量)可及的对象置为黑色</li>
-<li>清理所有白色对象</li>
-<li>将幸存的黑色对象全部置为白色</li>
-</ol>
-
-<p>这应该是最简单的mark-sweep算法. Lua5.0 就是采用的这种算法。 这种算法的缺点一目了然。 不是增量的GC算法。因此GC过程中mutator肯定是被paused的。</p>
-
-
-  <div class="more">
-    <a href="/垃圾回收/两色标记回收/" class="btn">read more..</a>
   </div>
 </div>
 
