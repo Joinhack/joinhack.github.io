@@ -9,6 +9,11 @@
 		<changefreq>weekly</changefreq>
 	</url>
 	<url>
+		<loc>http://sample.com/OS/80386保护机制/</loc>
+		<lastmod>2015-12-22</lastmod>
+		<changefreq>weekly</changefreq>
+	</url>
+	<url>
 		<loc>http://sample.com/OS/GDT全局描述表/</loc>
 		<lastmod>2015-12-18</lastmod>
 		<changefreq>weekly</changefreq>

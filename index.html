@@ -116,6 +116,33 @@
 </div>
 
 <div class="post">
+  <h3 class="title"><a href="/OS/80386保护机制/">80386保护机制</a> <span class="date">2015-12-22</span></h3>
+
+  <h2>80386保护机制</h2>
+
+<ul>
+<li><p>类型检查</p></li>
+
+<li><p>限制检查</p></li>
+
+<li><p>可寻址域约束</p></li>
+
+<li><p>程序入口点约束</p></li>
+
+<li><p>指令集约束</p></li>
+</ul>
+
+<h2>段级别保护</h2>
+
+<p>段级别的保护参数是保存在段描述中可以参照<a href="http://joinhack.github.io/OS/GDT%E5%85%A8%E5%B1%80%E6%8F%8F%E8%BF%B0%E8%A1%A8/">GDT全局描述表</a></p>
+
+
+  <div class="more">
+    <a href="/OS/80386保护机制/" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/OS/GDT全局描述表/">GDT全局描述表</a> <span class="date">2015-12-18</span></h3>
 
   <h2>GDT全局描述表</h2>
@@ -315,41 +342,6 @@ not a given value in that region is a reference.&rdquo;</p>
 
   <div class="more">
     <a href="/垃圾回收/三色标记回收/" class="btn">read more..</a>
-  </div>
-</div>
-
-<div class="post">
-  <h3 class="title"><a href="/redis/redis的hash表/">redis的hash表</a> <span class="date">2015-05-10</span></h3>
-
-  <h2>redis的hash表</h2>
-
-<p>首先还是先说说hash表是什么？ 很多语言有不同的定义 java中的HashMap HashTable， golang中的map都是hash表的实现。大致原理如下：</p>
-
-<p>hash表添加KEY-VALUE</p>
-
-<ol>
-<li>将KEY计算hash，将KEY的hash值与slots数求莫后找到对应slot. 如果slot有值循环整个slot对应的KEY-VALUE 如果slot中的KEY与加入的KEY相等 就覆盖其VALUE， 如果不等就追加到slot后面。</li>
-<li>达到占用slots的阀值expand slots, 遍历已有的数据重新加入扩展后的slots中(rehashing)。</li>
-<li>未达到阀值，完成hash插入操作。</li>
-</ol>
-
-<p>hash表删除KEY</p>
-
-<ol>
-<li>将KEY计算hash，将KEY的hash值与slots数求莫后 找到对应的slot。</li>
-<li>遍历整个slot依次对比KEY， 找到与KEY相等的KEY-VALUE将其移除。</li>
-</ol>
-
-<p>hash表查找KEY的对象</p>
-
-<ol>
-<li>将KEY计算hash，将KEY的hash值与slots数求莫后 找到对应的slot。</li>
-<li>遍历整个slot依次对比KEY， 找到与KEY相等的KEY-VALUE将VALUE返回。</li>
-</ol>
-
-
-  <div class="more">
-    <a href="/redis/redis的hash表/" class="btn">read more..</a>
   </div>
 </div>
 
