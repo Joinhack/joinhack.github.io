@@ -3,7 +3,90 @@
   <channel>
     <title>Join.G Blog</title>
     <link>http://sample.com</link>
-    <pubDate>2015-12-18 06:30:46 +0800</pubDate>
+    <pubDate>2015-12-22 02:50:38 +0800</pubDate>
+    <item>
+      <title>分页内存管理</title>
+      <link>http://sample.com/OS/分页内存管理/</link>
+      <pubDate>2015-12-22 12:00:00 +0800</pubDate>
+      <description>&lt;h2&gt;分页内存管理&lt;/h2&gt;
+
+&lt;p&gt;32位x86体系cpu支持4G虚拟地址空间而64位cpu则支持256T（理论上是16E）。分页内存允许进程访问整个虚拟内存空间， 而不是直接访问实际的物理内存(与分段的目的相似)。&lt;/p&gt;
+
+&lt;p&gt;前面说过分页是可选的一种内存方式， 通过设置CR0的PG位来让页转换生效。&lt;/p&gt;
+
+&lt;p&gt;在x86上&lt;a href=&#34;http://wiki.osdev.org/MMU&#34;&gt;MMU&lt;/a&gt;映射内存是通过连续的2张表进行的，一张叫页目录，一张叫页表。&lt;/p&gt;
+
+&lt;h2&gt;页帧&lt;/h2&gt;
+
+&lt;p&gt;页帧是4K-byte 为单位的连续物理内存地址&lt;/p&gt;
+
+&lt;h2&gt;页目录&lt;/h2&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/Joinhack/blog/master/images/Page_dir.png&#34; alt=&#34;page directory (from OSDev wiki)&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;图片来源于OSWIKI&lt;/p&gt;
+
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;td&gt;Flag&lt;/td&gt;
+&lt;td&gt;Name&lt;/td&gt;
+&lt;td&gt;Description&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;S&lt;/td&gt;
+&lt;td&gt;Page Size&lt;/td&gt;
+&lt;td&gt;也大小标志位, 1: 页表是4M 0: 4K&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;A&lt;/td&gt;
+&lt;td&gt;Accessed&lt;/td&gt;
+&lt;td&gt;1 表示cpu正在访问&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;D&lt;/td&gt;
+&lt;td&gt;Cache Disable&lt;/td&gt;
+&lt;td&gt;cache禁止位，1 不允许cache&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;W&lt;/td&gt;
+&lt;td&gt;Write-Through&lt;/td&gt;
+&lt;td&gt;write-through标志位&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;U&lt;/td&gt;
+&lt;td&gt;User/Supervisor&lt;/td&gt;
+&lt;td&gt;特权位, 1 全局访问， 0 只能是supervisor能够访问。&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;R&lt;/td&gt;
+&lt;td&gt;Read/Write&lt;/td&gt;
+&lt;td&gt;读写标志位&lt;/td&gt;
+&lt;/tr&gt;
+
+&lt;tr&gt;
+&lt;td&gt;P&lt;/td&gt;
+&lt;td&gt;Present&lt;/td&gt;
+&lt;td&gt;页是否在物理地址 1 在内存中， 0 被swapped。 如果在内存中能直接访问，如果被swapped， 访问时会报错。&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/Joinhack/blog/master/images/Page_table.png&#34; alt=&#34;page table (from OSDev wiki)&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;图片来源于OSWIKI&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>GDT全局描述表</title>
       <link>http://sample.com/OS/GDT全局描述表/</link>

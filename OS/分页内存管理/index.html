@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
-    <title>三色标记回收</title>
+    <title>分页内存管理</title>
   
     <meta name="author" content="Join G">
 
@@ -78,41 +78,102 @@
 
       <div class="content">
         <div class="page-header">
-  <h1>三色标记回收 </h1>
+  <h1>分页内存管理 </h1>
 </div>
 
 <div class="row">
   <div class="span8">
-    <h2>三色标记回收</h2>
+    <h2>分页内存管理</h2>
 
-<p>三色标记回收算法中的3个颜色分别是 白、黑、灰.三色标记回收算法大致如下:</p>
+<p>32位x86体系cpu支持4G虚拟地址空间而64位cpu则支持256T（理论上是16E）。分页内存允许进程访问整个虚拟内存空间， 而不是直接访问实际的物理内存(与分段的目的相似)。</p>
 
-<ol>
-<li>将初始化的对象置为白色</li>
-<li>所有根(全局变量或栈上的变量)可及的对象置为灰色</li>
-<li>遍历这些被置位灰色的对象，灰色对象引用到的对象都置为灰色，完成对灰色变量的遍历后，将灰色对象置为黑色</li>
-<li>继续遍历其他被灰色对象</li>
-<li>所有灰色对象遍历完后，就只会剩下黑色的和白色的对象</li>
-<li>所有这些黑色的对象都是根可达的，白色的都是根不可达的，白色对象都删除掉。</li>
-</ol>
+<p>前面说过分页是可选的一种内存方式， 通过设置CR0的PG位来让页转换生效。</p>
 
-<p>以上步骤就是三色标记回收的理论了。 非常简单吧， 至少在STW(STOP THE WORLD)的情况下.</p>
+<p>在x86上<a href="http://wiki.osdev.org/MMU">MMU</a>映射内存是通过连续的2张表进行的，一张叫页目录，一张叫页表。</p>
 
-<p>但是在mutator（mutator 与 collector分别是执行应用程序与执行GC）和GC同时工作的时候要满足 <strong>黑色对象只会引用灰色的对象或其他黑色对象。</strong> 变得复杂起来了。</p>
+<h2>页帧</h2>
+
+<p>页帧是4K-byte 为单位的连续物理内存地址</p>
+
+<h2>页目录</h2>
+
+<p><img src="https://raw.githubusercontent.com/Joinhack/blog/master/images/Page_dir.png" alt="page directory (from OSDev wiki)" />
+</p>
+
+<p>图片来源于OSWIKI</p>
+
+<table>
+<thead>
+<tr>
+<td>Flag</td>
+<td>Name</td>
+<td>Description</td>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>S</td>
+<td>Page Size</td>
+<td>也大小标志位, 1: 页表是4M 0: 4K</td>
+</tr>
+
+<tr>
+<td>A</td>
+<td>Accessed</td>
+<td>1 表示cpu正在访问</td>
+</tr>
+
+<tr>
+<td>D</td>
+<td>Cache Disable</td>
+<td>cache禁止位，1 不允许cache</td>
+</tr>
+
+<tr>
+<td>W</td>
+<td>Write-Through</td>
+<td>write-through标志位</td>
+</tr>
+
+<tr>
+<td>U</td>
+<td>User/Supervisor</td>
+<td>特权位, 1 全局访问， 0 只能是supervisor能够访问。</td>
+</tr>
+
+<tr>
+<td>R</td>
+<td>Read/Write</td>
+<td>读写标志位</td>
+</tr>
+
+<tr>
+<td>P</td>
+<td>Present</td>
+<td>页是否在物理地址 1 在内存中， 0 被swapped。 如果在内存中能直接访问，如果被swapped， 访问时会报错。</td>
+</tr>
+</tbody>
+</table>
+
+<p><img src="https://raw.githubusercontent.com/Joinhack/blog/master/images/Page_table.png" alt="page table (from OSDev wiki)" />
+</p>
+
+<p>图片来源于OSWIKI</p>
 
     <hr>
     <div class="pagination">
       <ul>
         <ul>
           
-            <li class="prev"><a href="/垃圾回收/两色标记回收/" title="两色标记回收">&larr; Previous</a></li>
           
+            <li class="prev disabled"><a>&larr; Previous</a></li>
           
 
             <li><a href="/archive">Archive</a></li>
 
           
-            <li class="next"><a href="/redis/redis的hash表/" title="redis的hash表">Next &rarr;</a></li>
+            <li class="next"><a href="/OS/GDT全局描述表/" title="GDT全局描述表">Next &rarr;</a></li>
           
           
         </ul>
@@ -138,13 +199,13 @@
   
   <div class="span4">
     <h4>Published</h4>
-    <div class="date"><span>2015-05-15</span></div>
+    <div class="date"><span>2015-12-22</span></div>
     <br>
     <h4>Categories</h4>
     <ul class="tag_box">
     
       <li>
-  <a href="/categories#垃圾回收-ref">垃圾回收 <span>2</span></a>
+  <a href="/categories#OS-ref">OS <span>2</span></a>
 </li>
     
       <li>
@@ -157,11 +218,7 @@
     <ul class="tag_box">
     
       <li>
-  <a href="/tags#垃圾回收-ref">垃圾回收 <span>2</span></a>
-</li>
-    
-      <li>
-  <a href="/tags#mark-sweep-ref">mark-sweep <span>2</span></a>
+  <a href="/tags#PAGING-ref">PAGING <span>1</span></a>
 </li>
     
     </ul>

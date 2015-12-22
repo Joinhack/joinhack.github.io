@@ -90,6 +90,32 @@
 
 
 <div class="post">
+  <h3 class="title"><a href="/OS/分页内存管理/">分页内存管理</a> <span class="date">2015-12-22</span></h3>
+
+  <h2>分页内存管理</h2>
+
+<p>32位x86体系cpu支持4G虚拟地址空间而64位cpu则支持256T（理论上是16E）。分页内存允许进程访问整个虚拟内存空间， 而不是直接访问实际的物理内存(与分段的目的相似)。</p>
+
+<p>前面说过分页是可选的一种内存方式， 通过设置CR0的PG位来让页转换生效。</p>
+
+<p>在x86上<a href="http://wiki.osdev.org/MMU">MMU</a>映射内存是通过连续的2张表进行的，一张叫页目录，一张叫页表。</p>
+
+<h2>页帧</h2>
+
+<p>页帧是4K-byte 为单位的连续物理内存地址</p>
+
+<h2>页目录</h2>
+
+<p><img src="https://raw.githubusercontent.com/Joinhack/blog/master/images/Page_dir.png" alt="page directory (from OSDev wiki)" />
+</p>
+
+
+  <div class="more">
+    <a href="/OS/分页内存管理/" class="btn">read more..</a>
+  </div>
+</div>
+
+<div class="post">
   <h3 class="title"><a href="/OS/GDT全局描述表/">GDT全局描述表</a> <span class="date">2015-12-18</span></h3>
 
   <h2>GDT全局描述表</h2>
