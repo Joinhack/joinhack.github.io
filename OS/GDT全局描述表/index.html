@@ -100,6 +100,8 @@ Segment 是段寄存器: CS, ES, DS, FS, GS</p>
 <p><img src="https://raw.githubusercontent.com/Joinhack/blog/master/images/real_mode_mem_seg.jpeg" alt="segment in real model " />
 </p>
 
+<p>实模式下内存段</p>
+
 <p>转换成物理地址公式
 <code>
 PhysicalAddress = Segment * 16 + Offset
@@ -116,6 +118,8 @@ mov %ds:(0x20), %ax
 
 <p><img src="https://raw.githubusercontent.com/Joinhack/blog/master/images/protected_mode_mem_seg.jpeg" alt="segment in protect model " />
 </p>
+
+<p>保护模式下内存段</p>
 
 <h2>保护模式的内存寻址(32bits)</h2>
 

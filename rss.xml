@@ -3,7 +3,7 @@
   <channel>
     <title>Join.G Blog</title>
     <link>http://sample.com</link>
-    <pubDate>2015-12-24 01:15:38 +0800</pubDate>
+    <pubDate>2015-12-24 01:18:12 +0800</pubDate>
     <item>
       <title>分页内存管理</title>
       <link>http://sample.com/OS/分页内存管理/</link>
@@ -189,6 +189,8 @@ Segment 是段寄存器: CS, ES, DS, FS, GS&lt;/p&gt;
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/Joinhack/blog/master/images/real_mode_mem_seg.jpeg&#34; alt=&#34;segment in real model &#34; /&gt;
 &lt;/p&gt;
 
+&lt;p&gt;实模式下内存段&lt;/p&gt;
+
 &lt;p&gt;转换成物理地址公式
 &lt;code&gt;
 PhysicalAddress = Segment * 16 + Offset
@@ -205,6 +207,8 @@ mov %ds:(0x20), %ax
 
 &lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/Joinhack/blog/master/images/protected_mode_mem_seg.jpeg&#34; alt=&#34;segment in protect model &#34; /&gt;
 &lt;/p&gt;
+
+&lt;p&gt;保护模式下内存段&lt;/p&gt;
 
 &lt;h2&gt;保护模式的内存寻址(32bits)&lt;/h2&gt;
 
