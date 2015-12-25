@@ -3,7 +3,88 @@
   <channel>
     <title>Join.G Blog</title>
     <link>http://sample.com</link>
-    <pubDate>2015-12-24 01:18:12 +0800</pubDate>
+    <pubDate>2015-12-25 12:15:02 +0800</pubDate>
+    <item>
+      <title>80386保护机制</title>
+      <link>http://sample.com/OS/80386保护机制/</link>
+      <pubDate>2015-12-22 12:00:00 +0800</pubDate>
+      <description>&lt;h2&gt;80386保护机制&lt;/h2&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;类型检查&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;限制检查&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;可寻址域约束&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;程序入口点约束&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;指令集约束&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2&gt;段级别保护&lt;/h2&gt;
+
+&lt;p&gt;段级别的保护参数是保存在段描述中可以参照&lt;a href=&#34;http://joinhack.github.io/OS/GDT%E5%85%A8%E5%B1%80%E6%8F%8F%E8%BF%B0%E8%A1%A8/&#34;&gt;GDT全局描述表&lt;/a&gt;&lt;/p&gt;
+
+&lt;h1&gt;类型检查&lt;/h1&gt;
+
+&lt;p&gt;描述符中访问控制有2个功能&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;不同的描述符定于(代码段与数据段的访问控制中的意义)&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;指定段用处&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;cpu会通过端加载的selector中指定的端描述进行类型检查&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;只能讲代码段加载到CS寄存器&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;不能将代码段加载到DS寄存器&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;只能将数据段加载到SS&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;限制检测&lt;/h1&gt;
+
+&lt;p&gt;limit保护程序不会访问到段描述设定以外的内存。 如果程序试图访问段描述限制以外的内存将出现异常。&lt;/p&gt;
+
+&lt;h1&gt;访问地址约束&lt;/h1&gt;
+
+&lt;p&gt;内存地址操作 cpu通过selector将数据段加入到段寄存器(DS, SS, ES, FS, GS), cpu自动评估比较特权级别。不同的特权级别使用不同的特权比较。&lt;/p&gt;
+
+&lt;h1&gt;控制转移约束&lt;/h1&gt;
+
+&lt;p&gt;80386中控制转移(control transfer)是通过指令(JMP, CALL, RET， INT, IRET)与异常和中断完成。&lt;/p&gt;
+
+&lt;p&gt;near格式的(jmp,call,ret)只是在当前段转移，因此只需要检查limit。只要不超出limit限制就行。&lt;/p&gt;
+
+&lt;p&gt;而far格式的(jmp, call)中涉及到其他段，因此需要特权检测。&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;使用其他的段描述&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;选择调用门描述&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h1&gt;门描述保证程序入口点&lt;/h1&gt;
+
+&lt;ul&gt;
+&lt;li&gt;&lt;p&gt;调用门(call gate)&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;陷入门(trap gate)&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;陷入门(trap gate)&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;中断门(interrupt gate)&lt;/p&gt;&lt;/li&gt;
+
+&lt;li&gt;&lt;p&gt;任务门(task gate)&lt;/p&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;调用门描述用于跳转指令用相同方式在不同段中跳转，陷入门与中断门用于陷入与中断，任务门用于任务切换。&lt;/p&gt;
+</description>
+    </item>
     <item>
       <title>分页内存管理</title>
       <link>http://sample.com/OS/分页内存管理/</link>
@@ -85,87 +166,6 @@
 &lt;/p&gt;
 
 &lt;p&gt;图片来源于OSWIKI&lt;/p&gt;
-</description>
-    </item>
-    <item>
-      <title>80386保护机制</title>
-      <link>http://sample.com/OS/80386保护机制/</link>
-      <pubDate>2015-12-22 12:00:00 +0800</pubDate>
-      <description>&lt;h2&gt;80386保护机制&lt;/h2&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;类型检查&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;限制检查&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;可寻址域约束&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;程序入口点约束&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;指令集约束&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2&gt;段级别保护&lt;/h2&gt;
-
-&lt;p&gt;段级别的保护参数是保存在段描述中可以参照&lt;a href=&#34;http://joinhack.github.io/OS/GDT%E5%85%A8%E5%B1%80%E6%8F%8F%E8%BF%B0%E8%A1%A8/&#34;&gt;GDT全局描述表&lt;/a&gt;&lt;/p&gt;
-
-&lt;h1&gt;类型检查&lt;/h1&gt;
-
-&lt;p&gt;描述符中访问控制有2个功能&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;不同的描述符定于(代码段与数据段的访问控制中的意义)&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;指定段用处&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;cpu会通过端加载的selector中指定的端描述进行类型检查&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;只能讲代码段加载到CS寄存器&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;不能将代码段加载到DS寄存器&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;只能将数据段加载到SS&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1&gt;限制检测&lt;/h1&gt;
-
-&lt;p&gt;limit保护程序不会访问到段描述设定以外的内存。 如果程序试图访问段描述限制以外的内存将出现异常。&lt;/p&gt;
-
-&lt;h1&gt;访问地址约束&lt;/h1&gt;
-
-&lt;p&gt;内存地址操作 cpu通过selector将数据段加入到段寄存器(DS, SS, ES, FS, GS), cpu自动评估比较特权级别。不同的特权级别使用不同的特权比较。&lt;/p&gt;
-
-&lt;h1&gt;控制转移约束&lt;/h1&gt;
-
-&lt;p&gt;80386中控制转移(control transfer)是通过指令(JMP, CALL, RET， INT, IRET)与异常和中断完成。&lt;/p&gt;
-
-&lt;p&gt;near格式的(jmp,call,ret)只是在当前段转移，因此只需要检查limit。只要不超出limit限制就行。&lt;/p&gt;
-
-&lt;p&gt;而far格式的(jmp, call)中涉及到其他段，因此需要特权检测。&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;使用其他的段描述&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;选择调用门描述&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1&gt;门描述保证程序入口点&lt;/h1&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;调用门(call gate)&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;陷入门(trap gate)&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;陷入门(trap gate)&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;中断门(interrupt gate)&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;任务门(task gate)&lt;/p&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;调用门描述用于跳转指令用相同方式在不同段中跳转，陷入门与中断门用于陷入与中断，任务门用于任务切换。&lt;/p&gt;
 </description>
     </item>
     <item>
@@ -415,6 +415,11 @@ gdt:
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;定义一段宏帮助设定描述。gdt是自定义的全局描述表。&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&#34;https://raw.githubusercontent.com/Joinhack/blog/master/images/selector.png&#34; alt=&#34;selector&#34; /&gt;
+&lt;/p&gt;
+
+&lt;p&gt;TI： 1表示此descriptor是ldt&lt;/p&gt;
 </description>
     </item>
     <item>
